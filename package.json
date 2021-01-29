@@ -1,0 +1,23 @@
+{
+  "name": "dp_2021",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roshanstar24/dp2021.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roshanstar24/dp2021/issues"
+  },
+  "homepage": "https://github.com/roshanstar24/dp2021#readme",
+  "dependencies": {
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.5.0"
+  }
+}
