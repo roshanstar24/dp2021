@@ -1,0 +1,165 @@
+<!-- DataTables -->
+<link rel="stylesheet" href="/admin/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/admin/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="/admin/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+<link rel="stylesheet" href="/admin/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<!-- SweetAlert2 -->
+<script src="/admin/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+<style>
+    .editteam {
+        cursor: pointer;
+        color: indigo;
+    }
+
+    .deleteteam {
+        cursor: copy;
+        color: red;
+    }
+</style>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Available Team</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Dob</th>
+                            <th>Phone</th>
+                            <th>Emergency</th>
+                            <th>Facebook</th>
+                            <th>Instagram</th>
+                            <% if(loginuser.role == "Admin" || loginuser.role =="Author"){%>
+                            <th>Action</th>
+                            <%}%>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                        teams.forEach((team)=>{
+                            if(team["enabled"] == 1){%>
+                        <tr>
+                            <td><%=team["name"] %></td>
+                            <td><%=team["email1"] %></td>
+                            <td><%=team["role"] %></td>
+                            <td><%=team["dob"] %></td>
+                            <td><%=team["phone1"] %></td>
+                            <td><%=team["emergencycontact"] %></td>
+                            <td><%=team["facebook"] %></td>
+                            <td><%=team["instagram"] %></td>
+                            <% if(loginuser.role == "Admin" || loginuser.role =="Author"){%>
+                            <th>
+                                <span class="editteam" sendid="<%=team["id"] %>"><i class="fas fa-pen-nib"></i></span>
+                                &nbsp;&nbsp;
+                                <span class="deleteteam" sendid="<%=team["id"] %>"><i class="fas fa-trash"></i></span>
+                            </th>
+                            <%}%>
+                        </tr>
+                        <%}})%>
+                            </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Dob</th>
+                            <th>Phone</th>
+                            <th>Emergency#</th>
+                            <th>Facebook</th>
+                            <th>Instagram</th>
+                            <% if(loginuser.role == "Admin" || loginuser.role =="Author"){%>
+                            <th>Action</th>
+                            <%}%>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+</div>
+
+
+
+<!-- DataTables  & Plugins -->
+<script src="/admin/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/admin/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/admin/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/admin/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/admin/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/admin/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/admin/assets/plugins/jszip/jszip.min.js"></script>
+<script src="/admin/assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/admin/assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/admin/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/admin/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/admin/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+        })
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container();
+
+        $('.deleteteam').click(function () {
+            var this_ = $(this);
+            Toast.fire({
+                position: 'top-end',
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes!',
+                cancelButtonText: 'No, Don\'t Delete!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '/admin/deleteteam',
+                        method: 'post',
+                        data: "id=" + $(this).attr('sendid'),
+                        success: function (data) {
+                            console.log(data);
+                            this_.parents('tr').remove();
+                            Toast.fire({
+                                'text': data.message,
+                                'timer': 5000
+                            }
+                            )
+                        }
+                    })
+
+                }
+            })
+
+        })
+        $('.editteam').click(function () {
+            $.ajax({
+                url: '/admin/editteam',
+                method: 'post',
+                data: "id=" + $(this).attr('sendid'),
+                success: function (data) {
+                    $('#contentholder').html(data)
+                }
+            })
+        })
+    })
+</script>

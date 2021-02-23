@@ -1,0 +1,266 @@
+<link rel="stylesheet" href="/admin/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <a class="btn btn-app bg-success col-sm-5" id="savecustomer">
+                    <i class="fas fa-users"></i> Add New Customer
+                </a>
+                <a class="btn btn-app bg-danger col-sm-5" id="resetform">
+                    <i class="fas fa-inbox"></i> Reset Form
+                </a>
+            </div><!-- /.col -->
+
+
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<div class="container-fluid">
+    <form action="/admin/addnewcustomer" method="POST" id="createcustomerform">
+        <div class="row">
+            <div class="col-md-6 card">
+                <div class="card-header">
+                    <h5 class="card-title">Primary Details</h5>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="phone1" class="col-sm-2 col-form-label">Phone </label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="phone1" id="phone1">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fab fa-whatsapp"></i></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="email1" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email1" placeholder="Primary Email"
+                                    name="email1">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="dob" class="col-sm-2 col-form-label">Birthdate</label>
+                            <div class="col-sm-10">
+                                <div class="input-group date" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input" data-target="#dob"
+                                        placeholder="Date of Birth" name="dob" id="dob" />
+                                    <div class="input-group-append" data-target="#dob" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="col-md-6 ">
+                <div class="card-header">
+                    <h5 class="card-title">Extra Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="phone2" class="col-sm-2 col-form-label">Second Phone</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="phone2" id="phone2">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-sms"></i></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="facebook" class="col-sm-2 col-form-label">Facebook</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="facebook" id="facebook">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fab fa-facebook"></i></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="instagram" class="col-sm-2 col-form-label">Instagram</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="instagram" id="instagram">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="twitter" class="col-sm-2 col-form-label">Twitter</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="twitter" id="twitter">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fab fa-twitter"></i></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class=" col">
+                <div class="card-header">
+                    <h5 class="card-title">Address Details</h5>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="addressline1" class="col-sm-2 col-form-label">Address Line 1</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="addressline1" placeholder="Address Line 1"
+                                    name="addressline1">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="addressline2" class="col-sm-2 col-form-label">Address Line 2</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="addressline2" placeholder="Address Line 2"
+                                    name="addressline2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="city" class="col-sm-4 col-form-label">City</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="city" placeholder="City"
+                                            name="city">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="state" class="col-sm-2 col-form-label">State</label>
+                                    <div class="col-sm-10">
+                                        <input type="tet" class="form-control" id="state" placeholder="State"
+                                            name="state">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="pincode" class="col-sm-4 col-form-label">Picode</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="pincode" placeholder="Pincode"
+                                            name="pincode">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="aadhar" class="col-sm-2 col-form-label">Aadhar #</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="aadharno" placeholder="Aadhaar #"
+                                            name="aadharno">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#resetform').click(function () {
+            $('#createcustomerform').trigger('reset');
+        })
+        $('#phone1, #phone2').focusout(function () {
+            $(this).val($(this).val().replace(/^0+/g, ''))
+            $(this).val($(this).val().replace(/^91/, ''))
+        })
+
+        $('#savecustomer').click(function () {
+            console.log($('#createcustomerform').serialize())
+            var valid = true;
+
+            if (emailvalidation($('#email1'))) { valid = false; }
+            if (emptyvalidation($('#name'))) { valid = false }
+            if (emptyvalidation($('#dob'))) { valid = false }
+            if (emptyvalidation($('#phone1'))) { valid = false };
+            if ($('#phone1').val().length < 10) { valid = false; $('#phone1').css('border-color', 'red') }
+
+            if (valid) {
+                $.ajax({
+                    url: $('#createcustomerform').attr('action'),
+                    method: 'post',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: $('#createcustomerform').serialize(),
+                    success: function (data) {
+                        console.log(data);
+                        $('input,select').css('border-color', '');
+                        console.log(data.status)
+                        if (data.status) {
+                            Toast.fire({
+                                icon: "success",
+                                title: data.message
+                            })
+                            $('#createcustomerform').trigger('reset');
+                        } else {
+                            Toast.fire({
+                                icon: "error",
+                                title: data.message
+                            })
+                        }
+                        // $('#createcustomerform').trigger('reset');
+                    }
+                })
+            }
+            else {
+                Toast.fire({
+                    icon: "error",
+                    title: "- - Please Enter Valid Data."
+                })
+            }
+        })
+        $('#dob, #doj').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $('#dob, #doj').keypress(function () {
+            event.preventDefault();
+        });
+    })
+</script>

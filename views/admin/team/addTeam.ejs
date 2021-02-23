@@ -1,0 +1,432 @@
+<!-- Select2 -->
+<link rel="stylesheet" href="/admin/assets/plugins/select2/css/select2.min.css">
+<!-- daterange picker -->
+<link rel="stylesheet" href="/admin/assets/plugins/daterangepicker/daterangepicker.css">
+
+<link rel="stylesheet" href="/admin/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #28a745;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: white;
+    }
+
+    #saveuserdisabled {
+        cursor: not-allowed;
+    }
+</style>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <a class="btn btn-app bg-success col-sm-5" id="saveuser" style="display: none;">
+                    <i class="fas fa-users"></i> Add New Team Member
+                </a>
+                <a class="btn btn-app bg-warning col-sm-5" id="saveuserdisabled">
+                    <i class="fas fa-users"></i> Please Verify Email 1st
+                </a>
+                <a class="btn btn-app bg-danger col-sm-5" id="resetform">
+                    <i class="fas fa-inbox"></i> Reset Form
+                </a>
+            </div><!-- /.col -->
+
+
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<div class="container-fluid">
+    <form action="/admin/addnewteam" method="POST" id="createuserform">
+        <div class="row">
+            <div class="col-md-6 card">
+                <div class="card-header">
+                    <h5 class="card-title">Login Details</h5>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="phone1" class="col-sm-2 col-form-label">Phone </label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="phone1" id="phone1">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fab fa-whatsapp"></i></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <label for="email1" class="col-sm-2 col-form-label">Email</label>
+
+                            <!-- /btn-group -->
+                            <input type="email" class="form-control" id="email1" placeholder="Primary Email"
+                                name="email1">
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn btn-warning" id="verifyemail">Check</button>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="password1" class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password1" placeholder="Password"
+                                    name="password1">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="password2" class="col-sm-2 col-form-label">Retype Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password2" name="password2"
+                                    placeholder="Retype Password">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="dob" class="col-sm-2 col-form-label">Birthdate</label>
+                            <div class="col-sm-10">
+                                <div class="input-group date" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input" data-target="#dob"
+                                        placeholder="Date of Birth" name="dob" id="dob" />
+                                    <div class="input-group-append" data-target="#dob" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="doj" class="col-sm-2 col-form-label">Joining Date</label>
+                            <div class="col-sm-10">
+                                <div class="input-group date" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input" data-target="#doj"
+                                        placeholder="Date of Joining" name="doj" id="doj" />
+                                    <div class="input-group-append" data-target="#doj" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-2 col-form-label">User Role</label>
+                            <div class="col-sm-10">
+                                <select class="custom-select" name="role">
+                                    <option value="author">Author</option>
+                                    <option value="editor">Editor</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="guest">Guest</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="col-md-6 ">
+                <div class="card-header">
+                    <h5 class="card-title">Extra Details</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label for="speciality" class="col-sm-2 col-form-label">Speciality</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="speciality" placeholder="Speciality"
+                                name="speciality">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="phone2" class="col-sm-2 col-form-label">Second Phone</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="phone2" id="phone2">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-sms"></i></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="emergencycontact" class="col-sm-2 col-form-label">Emergency</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="emergencycontact" id="emergencycontact">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-mobile"></i></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email2" class="col-sm-2 col-form-label">Alternative Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="email2" placeholder="Alternative Email"
+                                name="email2">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="education" class="col-sm-2 col-form-label">Education</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="education" placeholder="Education"
+                                name="education">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="location" class="col-sm-2 col-form-label">Working Location</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="location" placeholder="Working Location"
+                                name="location" value="Patna">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nickname" class="col-sm-2 col-form-label">Nick Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="nickname" placeholder="Nick Name"
+                                name="nickname">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="tag" class="col-sm-2 col-form-label">Tags</label>
+                        <div class="col-sm-10">
+                            <select class="select2" multiple="multiple" data-placeholder="Select Tags"
+                                style="width: 100%;" name="tag" id="tags">
+
+                                <%
+                                // console.log(tags);
+                                tags.forEach((tag)=>{
+                                    if(tag["enabled"] == 1){%>
+                                <option value="<%=tag["name"] %>"><%=tag["name"] %></option>
+                                <%}
+                                })%>
+
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class=" col">
+                <div class="card-header">
+                    <h5 class="card-title">Address Details</h5>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="addressline1" class="col-sm-2 col-form-label">Address Line 1</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="addressline1" placeholder="Address Line 1"
+                                    name="addressline1">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="addressline2" class="col-sm-2 col-form-label">Address Line 2</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="addressline2" placeholder="Address Line 2"
+                                    name="addressline2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="city" class="col-sm-4 col-form-label">City</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="city" placeholder="City"
+                                            name="city">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="state" class="col-sm-2 col-form-label">State</label>
+                                    <div class="col-sm-10">
+                                        <input type="tet" class="form-control" id="state" placeholder="State"
+                                            name="state">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="pincode" class="col-sm-4 col-form-label">Picode</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="pincode" placeholder="Pincode"
+                                            name="pincode">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="aadhar" class="col-sm-2 col-form-label">Aadhar #</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="aadharno" placeholder="Aadhaar #"
+                                            name="aadharno">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label for="facebook" class="col-sm-2 col-form-label">Facebook</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="facebook" id="facebook"
+                                        placeholder="Facebook Profile Link">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fab fa-facebook"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="instagram" class="col-sm-2 col-form-label">Instagram</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="instagram" id="instagram"
+                                        placeholder="Instagram Profile Link">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="twitter" class="col-sm-2 col-form-label">Twitter</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="twitter" id="twitter"
+                                        placeholder="Twittwer Profile Link">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fab fa-twitter"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('.select2').select2()
+        $('#resetform').click(function () {
+            $('#createuserform').trigger('reset');
+        })
+        $('#phone1, #phone2, #emergencycontact').focusout(function () {
+            $(this).val($(this).val().replace(/^0+/g, ''))
+            $(this).val($(this).val().replace(/^91/, ''))
+        })
+
+        $('#saveuser').click(function () {
+            console.log($('#createuserform').serialize())
+            var valid = true;
+
+            if (emailvalidation($('#email1'))) { valid = false; }
+            if (emptyvalidation($('#name'))) { valid = false }
+            if (emptyvalidation($('#dob'))) { valid = false }
+            if (emptyvalidation($('#doj'))) { valid = false }
+            if (emptyvalidation($('#phone1'))) { valid = false }
+            if ($('#phone1').val().length < 10) { valid = false; $('#phone1').css('border-color', 'red') }
+            if (emptyvalidation($('#password1'))) { valid = false }
+
+            if ($('#password1').val() != $('#password2').val()) { valid = false; $('#password1, #password2').css('border-color', 'red') }
+
+            if (valid) {
+                $.ajax({
+                    url: $('#createuserform').attr('action'),
+                    method: 'post',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: $('#createuserform').serialize(),
+
+                    success: function (data) {
+                        console.log(data);
+                        $('input,select').css('border-color', '');
+                        if (data.status) {
+                            Toast.fire({
+                                icon: "success",
+                                title: data.message
+                            })
+                            $('#createuserform').trigger('reset');
+
+                        } else {
+                            Toast.fire({
+                                icon: "error",
+                                title: data.message
+                            })
+                        }
+                        $('#createuserform').trigger('reset');
+                    }
+                })
+            }
+            else {
+                Toast.fire({
+                    icon: "error",
+                    title: "- - Please Enter Valid Data."
+                })
+            }
+        })
+        $('#dob, #doj').datetimepicker({
+            format: 'L'
+        });
+        $('#dob, #doj').keypress(function () {
+            event.preventDefault();
+        });
+        $('#verifyemail').click(function () {
+            event.preventDefault();
+            $.ajax({
+                url: "/admin/verifyemail",
+                method: "post",
+                data: { email1: $('#email1').val() },
+                success: function (data) {
+                    if (data.status) {
+                        $('#email1').attr('readonly', 'readonly')
+                        $('#saveuserdisabled').fadeOut(500, () => {
+                            $('#saveuser').fadeIn(500);
+
+                        });
+                        $('#verifyemail').removeClass('btn-warning').addClass('btn-success')
+                        Toast.fire({
+                            icon: "success",
+                            title: data.message
+                        })
+                    }
+                    else {
+                        Toast.fire({
+                            icon: "error",
+                            title: data.message
+                        })
+                    }
+                }
+            })
+
+        });
+    })
+</script>

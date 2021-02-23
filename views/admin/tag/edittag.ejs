@@ -1,0 +1,111 @@
+<link rel="stylesheet" href="/admin/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <a class="btn btn-app bg-success col-sm-5" id="updatetag">
+                    <i class="fas fa-users"></i> Save Tag Updates
+                </a>
+                <a class="btn btn-app bg-danger col-sm-5" id="resetform">
+                    <i class="fas fa-inbox"></i> Reset Form
+                </a>
+            </div><!-- /.col -->
+
+
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<div class="container-fluid">
+    <form action="/admin/updatetag" method="POST" id="updatetagform">
+        <div class="row">
+            <div class="col-md-6 card">
+                <div class="card-header">
+                    <h5 class="card-title">Tag Details</h5>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-2 col-form-label">Tag Name</label>
+                            <div class="col-sm-10">
+
+                                <input type="text" class="form-control" id="name" placeholder="Name" name="name"
+                                    value="<%=tags.name%>">
+                                <input type="text" readonly class="form-control" value="<%=tags.id%>" name="id">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label">Desc</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="description" value="<%=tags.description%>"
+                                    placeholder=" Tag Description (Optional) " name="description">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#resetform').click(function () {
+            $('#updatetagform').trigger('reset');
+        })
+
+        $('#updatetag').click(function () {
+            console.log($('#updatetagform').serialize())
+            var valid = true;
+            if (emptyvalidation($('#name'))) { valid = false }
+
+            if (valid) {
+                $.ajax({
+                    url: $('#updatetagform').attr('action'),
+                    method: 'post',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: $('#updatetagform').serialize(),
+                    success: function (data) {
+                        console.log(data);
+                        $('input,select').css('border-color', '');
+                        console.log(data.status)
+                        if (data.status) {
+                            Toast.fire({
+                                icon: "success",
+                                title: data.message
+                            })
+                            // $('#updatetagform').trigger('reset');
+                        } else {
+                            Toast.fire({
+                                icon: "error",
+                                title: data.message
+                            })
+                        }
+                        // $('#createcustomerform').trigger('reset');
+                    }
+                })
+            }
+            else {
+                Toast.fire({
+                    icon: "error",
+                    title: "- - Please Enter Valid Data."
+                })
+            }
+        })
+        $('#dob, #doj').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+        $('#dob, #doj').keypress(function () {
+            event.preventDefault();
+        });
+    })
+</script>

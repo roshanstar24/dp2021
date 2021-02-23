@@ -1,0 +1,63 @@
+<!-- REQUIRED SCRIPTS -->
+
+<!-- Bootstrap -->
+<!-- <script src="/admin/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+<!-- overlayScrollbars -->
+<!-- <script src="/admin/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script> -->
+<!-- AdminLTE App -->
+<script src="/admin/assets/dist/js/adminlte.js"></script>
+
+
+<!-- Select2 -->
+<script src="/admin/assets/plugins/select2/js/select2.full.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="/admin/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- InputMask -->
+<script src="/admin/assets/plugins/moment/moment.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="/admin/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Page specific script -->
+<script src="/admin/assets/validate.js"></script>
+<script>
+    $(document).ready(function () {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000
+        });
+        $('#profilelink').click(function (event) {
+            aj = $(this)
+            event.preventDefault();
+            $.ajax({
+                url: aj.attr('ahref'),
+                method: 'post',
+                data: "id=" + aj.attr('sendid'),
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    $('#contentholder').html(data)
+                }
+            })
+        })
+        $('.sendajax').click(function (event) {
+            aj = $(this)
+            console.log(aj.attr('ahref'))
+            event.preventDefault();
+            $.ajax({
+                url: aj.attr('ahref'),
+                method: 'get',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    $('#contentholder').html(data)
+                }
+            })
+        })
+    })
+</script>
+</body>
+
+</html>

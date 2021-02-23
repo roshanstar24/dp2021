@@ -1,0 +1,507 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Profile</h1>
+            </div>
+            <!-- <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">User Profile</li>
+                    </ol>
+                </div> -->
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <!-- <img class="profile-user-img img-fluid img-circle" src="" alt="User profile picture"> -->
+                        </div>
+
+                        <h3 class="profile-username text-center"><%=profiledata["name"]%></h3>
+                        <h6 style="color:darkcyan;" class=" text-center"><%=profiledata["email1"]%></h6>
+                        <h6 class=" text-center"><%=profiledata["speciality"]%></h6>
+                        <p class="text-muted text-center"><%=profiledata["role"]%></p>
+
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Facebook</b>
+                                <% if (profiledata["facebook"] !== null ){%>
+                                <a class="float-right" href="<%=profiledata["facebook"]%>" target="_blank">Link</a>
+                                <%}else{%>
+                                <a class="float-right">NA</a>
+                                <%}%>
+
+                            </li>
+                            <li class="list-group-item">
+                                <b>Instagram</b>
+                                <% if (profiledata["instagram"] !== null ){%>
+                                <a class="float-right" href="<%=profiledata["instagram"]%>" target="_blank">Link</a>
+                                <%}else{%>
+                                <a class="float-right">NA</a>
+                                <%}%>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Twitter</b>
+                                <% if (profiledata["twitter"] !== null ){%>
+                                <a class="float-right" href="<%=profiledata["twitter"]%>" target="_blank">Link</a>
+                                <%}else{%>
+                                <a class="float-right">NA</a>
+                                <%}%>
+                            </li>
+                            <!-- <li class="list-group-item">
+                                <b>Phone 1</b>
+                                <% if (profiledata["phone1"] !== null ){%>
+                                <a class="float-right" target="_blank"
+                                    href="https://api.whatsapp.com/send?phone=<%=profiledata["phone1"]%>">(<%=profiledata["phone1"]%>)
+                                    <i class="fab fa-whatsapp"></i></a>
+                                <%}else{%>
+                                <a class="float-right">NA</a>
+                                <%}%>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Phone 2</b>
+                                <% if (profiledata["phone2"] !== null && profiledata["phone2"].trim() != ""){%>
+                                <a class="float-right" target="_blank"
+                                    href="https://api.whatsapp.com/send?phone=<%=profiledata["phone2"]%>">(<%=profiledata["phone2"]%>)
+                                    <i class="fab fa-whatsapp"></i></a>
+                                <%}else{%>
+                                <a class="float-right">NA</a>
+                                <%}%>
+                            </li> -->
+                        </ul>
+
+                        <a href="#" class="btn btn-primary btn-block"><b>Reset Password</b></a>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+                <!-- About Me Box -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">About Me</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        
+                        <strong><i class="fab fa-odnoklassniki"></i> Nick Name</strong>
+
+                        <p class="text-muted">
+                            <%=profiledata["nickname"]%>
+                                </p>
+
+                                <hr>
+                                <strong><i class="fas fa-book mr-1"></i> Education</strong>
+
+                                <p class="text-muted">
+                                    <%=profiledata["education"]%>
+                                </p>
+
+                                <hr>
+
+                                <strong><i class="fas fa-map-marker-alt mr-1"></i> Address</strong>
+
+                                <p class="text-muted">
+                                    <span><%=profiledata["addressline1"]%></span><br>
+                                    <span><%=profiledata["addressline2"]%></span><br>
+                                    <span><%=profiledata["city"]%></span>
+                                    <span><%=profiledata["state"]%></span><br>
+                                    <span><%=profiledata["pincode"]%></span>
+                                </p>
+
+                                <ul class="list-group list-group-unbordered mb-3">
+                                    <li class="list-group-item" title="Emergency Contact">
+                                        <b> <i class="fas fa-blender-phone"></i></b>
+                                        <a class="float-right"><%=profiledata["emergencycontact"]%></a>
+                                    </li>
+                                    <li class="list-group-item" title="Aadhar Number">
+                                        <b> <i class="fas fa-address-card"></i></b>
+                                        <a class="float-right"><%=profiledata["aadharno"]%></a>
+                                    </li>
+                                    <li class="list-group-item" title="speciality">
+                                        <b> <i class="fas fa-hand-sparkles"></i></b>
+                                        <a class="float-right"><%=profiledata["speciality"]%></a>
+                                    </li>
+                                </ul>
+
+                                <hr>
+
+                                <strong><i class="far fa-file-alt mr-1"></i> Tags</strong>
+
+                                <p class="text-muted"><%=profiledata["tag"]%></p>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#details"
+                                    data-toggle="tab">Details</a></li>
+
+                            <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
+                            </li>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active row" id="details">
+                                <div class="row">
+                                    <% if (profiledata["phone1"] !== null ){%>
+                                    <div class="col-lg-4 col-4">
+                                        <!-- small box -->
+                                        <div class="small-box bg-success">
+                                            <div class="inner">
+                                                <h3><%=profiledata["phone1"]%></h3>
+                                                <p>Phone 1</p>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </div>
+                                            <a class="small-box-footer" target="_blank"
+                                                href="https://api.whatsapp.com/send?phone=<%=profiledata["phone1"]%>">
+                                                Do Whatsapp <i class="fab fa-whatsapp"></i></a>
+                                        </div>
+                                    </div>
+                                    <%}%>
+                                    <% if (profiledata["phone2"] !== null ){%>
+                                    <div class="col-lg-4 col-4">
+                                        <!-- small box -->
+                                        <div class="small-box bg-info">
+                                            <div class="inner">
+                                                <h3><%=profiledata["phone2"]%></h3>
+                                                <p>Phone 2</p>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </div>
+                                            <a class="small-box-footer" target="_blank"
+                                                href="https://api.whatsapp.com/send?phone=<%=profiledata["phone2"]%>">
+                                                Do Whatsapp <i class="fab fa-whatsapp"></i></a>
+                                        </div>
+                                    </div>
+                                    <%}%>
+                                    <% if (profiledata["location"] !== null ){%>
+                                    <div class="col-lg-4 col-4">
+                                        <!-- small box -->
+                                        <div class="small-box bg-warning">
+                                            <div class="inner">
+                                                <h3><%=profiledata["location"]%></h3>
+                                                <p>Working Location</p>
+                                            </div>
+                                            <div class="icon">
+                                                <i class="fas fa-street-view"></i>
+                                            </div>
+                                            <a class="small-box-footer" target="_blank"
+                                                href="https://api.whatsapp.com/send?phone=<%=profiledata["location"]%>">
+                                                Do Whatsapp <i class="fab fa-whatsapp"></i></a>
+                                        </div>
+                                    </div>
+                                    <%}%>
+                                </div>
+                                <div class="row">
+                                    <% if(profiledata["doj"] !== null && profiledata["doj"].trim() !== ''){
+                                        var dojdate = profiledata["doj"]
+                                        var date1 = new Date(dojdate); 
+                                        var today = new Date(); 
+                                        // To calculate the time difference of two dates 
+                                        var Difference_In_Time = today.getTime() - date1.getTime(); 
+                                        
+                                        // To calculate the no. of days between two dates 
+                                        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                                        var Difference_In_Weeks = Difference_In_Time / (1000 * 3600 * 24 * 7);
+                                        var Difference_In_Months = Difference_In_Time / (2629800000);
+                                        var dateoptions = {  year: 'numeric', month: 'long', day: 'numeric'};
+                                    %>
+                                    <div class="col-md-6">
+                                        <!-- Widget: user widget style 1 -->
+                                        <div class="card card-widget widget-user">
+                                            <div class="ribbon-wrapper ribbon-lg">
+                                                <div class="ribbon bg-success text-lg">
+                                                    Joining
+                                                </div>
+                                            </div>
+                                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                                            <div class="widget-user-header text-white"
+                                                style="background-color: #17a2b8!important;">
+
+
+
+
+                                                <h3 class="widget-user-username ">
+                                                    <%=date1.toLocaleDateString("en-US", dateoptions)%>
+                                                </h3>
+                                                <h5 class="widget-user-desc "><%=profiledata["speciality"]%>
+                                                </h5>
+                                            </div>
+                                            <div class="widget-user-image">
+                                                <img class="img-circle" src="/uploads/assets/dp-circle.png"
+                                                    alt="User Avatar">
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="row">
+                                                    <div class="col-sm-4 border-right">
+                                                        <div class="description-block">
+                                                            <h5 class="description-header">
+                                                                <%=Math.round(Difference_In_Days)%>
+                                                            </h5>
+                                                            <span class="description-text">Days</span>
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                    <div class="col-sm-4 border-right">
+                                                        <div class="description-block">
+                                                            <h5 class="description-header">
+                                                                <%=Math.round(Difference_In_Weeks)%></h5>
+                                                            <span class="description-text">Weeks</span>
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                    <div class="col-sm-4">
+                                                        <div class="description-block">
+                                                            <h5 class="description-header">
+                                                                <%=Math.round(Difference_In_Months)%></h5>
+                                                            <span class="description-text">Months</span>
+                                                        </div>
+                                                        <!-- /.description-block -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                </div>
+                                                <!-- /.row -->
+                                            </div>
+                                        </div>
+                                        <!-- /.widget-user -->
+                                    </div>
+                                    <%}%>
+                                    <% if(profiledata["doj"] !== null && profiledata["doj"].trim() !== ''){
+                                        var dobdate = new Date(profiledata["dob"]);
+                                        var dd = dobdate.getDate();
+                                        var mm = dobdate.getMonth()+1
+                                        var yyyy = new Date().getFullYear();
+                                        var mmyydddd = mm+'-'+dd+'-'+(yyyy+1)
+                                        // To calculate the time difference of two dates 
+                                        var Difference_In_dob_Time = new Date(mmyydddd).getTime() - new Date().getTime();
+                                        // To calculate the no. of days between two dates 
+                                        var Difference_In_dob_Days = Math.round(Difference_In_dob_Time / (1000 * 3600 * 24));
+                                        var dobdateoptions = {  month: 'long', day: 'numeric'};
+                                        if(Difference_In_dob_Days == 365){
+                                            ddremaining = 0;
+                                            ddwidth = '100%';
+                                        }
+                                        else if( Difference_In_dob_Days >365){
+                                            ddremaining = Difference_In_dob_Days - 365
+                                            ddwidth = 100-((ddremaining*100)/365)+'%'
+                                        }
+                                        else{
+                                            ddremaining = Difference_In_dob_Days;
+                                            ddwidth = 100-((ddremaining*100)/365)+'%'
+                                        }
+
+                                    %>
+                                    <div class="col-md-6">
+                                        <!-- Widget: user widget style 1 -->
+                                        <div class="card card-widget widget-user">
+                                            <div class="ribbon-wrapper ribbon-lg">
+                                                <div class="ribbon bg-success text-lg">
+                                                    Birthday
+                                                </div>
+                                            </div>
+                                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                                            <div class="widget-user-header text-white"
+                                                style="background-color: #17a2b8!important;">
+
+                                                <h3 class="widget-user-username ">
+                                                    <%=dobdate.toLocaleDateString("en-US", dobdateoptions)%>
+                                                </h3>
+                                                <h5 class="widget-user-desc ">
+                                                </h5>
+                                            </div>
+                                            <div class="widget-user-image">
+                                                <img class="img-circle" src="/uploads/assets/dp-circle.png"
+                                                    alt="User Avatar">
+                                            </div>
+                                            <div class="card-footer">
+
+                                                <div class="progress-group">Days Reamining in Birthday
+                                                    <span class="float-right"><b><%=ddremaining%></b></span>
+                                                    <div class="progress progress-sm" style="margin-top: 20px;">
+                                                        <div class="progress-bar bg-primary"
+                                                            style="width: <%=ddwidth%>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <%}%>
+                                <!-- /.row -->
+                            </div>
+                        </div>
+                        <!-- /.widget-user -->
+                    </div>
+
+                    <!-- /.col -->
+                </div>
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="settings">
+                <form class="form-horizontal" method="POST" id="uploadphotoform" enctype="multipart/form-data" href="/admin/uploadprofilephoto">
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input accept="image/png,image/jpeg" type="file" class="custom-file-input" id="uploadphoto" name="uploadphoto">
+                        <label class="custom-file-label" for="uploadphoto"></label>
+                      </div>
+                      <div class="input-group-append">
+                        <button class="input-group-text" type="submit" id="uploadphotobutton">Upload</button>
+                      </div>
+                    </div>
+                    <hr>
+                </form>
+                <form class="form-horizontal">
+                
+                    <p>Change Password</p>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button type="button" class="btn btn-danger">Old Password Show</button>
+                        </div>
+                        <!-- /btn-group -->
+                        <input type="password" id="oldpassword" name="oldpassword" placeholder="Old Password" class="form-control">
+                        <input type="hidden" id="myid" name="id" readonly value="<%=profiledata['id']%>" >
+                                            </div><br>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <button type="button" class="btn btn-danger">Show New
+                                                        Password</button>
+                                                </div>
+                                                <!-- /btn-group -->
+                                                <input type="password" id="newpassword" name="newpassword"
+                                                    class="form-control" placeholder="New Password">
+                                            </div><br>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <button type="button" class="btn btn-danger">Show Re-enter
+                                                        Password</button>
+                                                </div>
+                                                <!-- /btn-group -->
+                                                <input placeholder="Re Enter New Password" type="password"
+                                                    name="renewpassword" id="renewpassword" class="form-control">
+                                            </div>
+                                            <br>
+                                            <button type="button" id="changepassword"
+                                                class="btn btn-block btn-success">Submit </button>
+                                            </form>
+                                        </div>
+                                        <!-- /.tab-pane -->
+                                    </div>
+                                    <!-- /.tab-content -->
+                                </div><!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+<!-- Bootstrap 4 -->
+<script src="/admin/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000
+        });
+
+        $("form#uploadphotoform").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: $(this).attr('href'),
+                type: 'POST',
+                data: formData,
+                success: function (data) {
+                    Toast.fire({
+                        icon: "success",
+                        "title": data.message
+                    })
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+        // $('#uploadphotobutton').click(function () {
+        //     var form = document.getElementById('uploadphotoform')
+        //     var formData = new FormData(form);
+        //     $.ajax({
+        //         url: $('#uploadphotoform').attr('href'),
+        //         method: 'post',
+        //         processData: false,
+        //         contentType: false,
+        //         xhrFields: {
+        //             withCredentials: true
+        //         },
+        //         data: formData,
+        //         success: function (data) {
+        //             console.log(data)
+        //         }
+        //     })
+        // })
+        $('#changepassword').click(function () {
+            if ($('#renewpassword').val() == $('#newpassword').val()) {
+                if ($('#newpassword').val().trim() == '') {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Enter New Password to proceed'
+                    })
+                } else {
+                    $.ajax({
+                        url: '/admin/changepassword',
+                        method: 'post',
+                        data: 'oldp=' + $('#oldpassword').val() + "&newp=" + $('#newpassword').val() + "&id=" + $('#myid').val(),
+                        success: function (data) {
+                            if (data.status) {
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: 'Password Changed.'
+                                })
+                            }
+                            else {
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.message
+                                })
+                            }
+                        }
+                    })
+                }
+            }
+            else {
+
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Password and Re-enter Password not matched.'
+                })
+
+            }
+        })
+    })
+</script>
