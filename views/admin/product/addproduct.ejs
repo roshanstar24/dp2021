@@ -1,0 +1,549 @@
+<!-- Select2 -->
+<link rel="stylesheet" href="/assets/admin/plugins/select2/css/select2.min.css">
+<!-- daterange picker -->
+<link rel="stylesheet" href="/assets/admin/plugins/daterangepicker/daterangepicker.css">
+
+<link rel="stylesheet" href="/assets/admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #28a745;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: white;
+    }
+
+    .select2-container .select2-selection--single,
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: calc(2.25rem + 2px);
+    }
+
+    a[data-toggle=lightboxs] img {
+        max-width: 150px;
+        max-height: 200px;
+        min-width: 150px;
+        min-height: 200px;
+    }
+
+    .prodimg {
+        text-align: center;
+    }
+
+    .prodimg img {
+        margin-top: 5px;
+    }
+    div.imgid{
+        font-size: 50%;
+    }
+</style>
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <a class="btn btn-app bg-success col-sm-5" id="saveproduct">
+                    <i class="fas fa-users"></i> Add New Product
+                </a>
+                <a class="btn btn-app bg-danger col-sm-5" id="resetform">
+                    <i class="fas fa-inbox"></i> Reset Form
+                </a>
+            </div><!-- /.col -->
+
+
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<div class="container-fluid">
+    <form action="/admin/addnewproduct" method="POST" id="createproductform">
+        <div class="row">
+            <div class="col-md-12">
+                <div class=" card card-info">
+                    <div class="card-header">
+                        <h5 class="card-title">Category</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="primary_category">Primary</label>
+                                    <select class="custom-select select2" name="primary_category" id="primary_category">
+                                        <% category.forEach((cat)=>{
+                                            if(cat["enabled"] == 1 && cat["type"] == 'primary'){%>
+                                            <option value="<%=cat["name"] %>"><%=cat["name"] %>
+                                            </option>
+                                            <%} })%>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="secondary_category">Secondary</label>
+                                    <select class="custom-select select2" name="secondary_category" id="secondary_category">
+                                        <option value=""></option>
+                                        <% category.forEach((cat)=>{
+                                            if(cat["enabled"] == 1 && cat["type"] == 'secondary'){%>
+                                            <option value="<%=cat["name"] %>"><%=cat["name"] %>
+                                            </option>
+                                            <%} })%>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="tertiary_category">Tertiary</label>
+                                    <select class="custom-select select2" name="tertiary_category" id="tertiary_category">
+                                        <option value=""></option>
+                                        <% category.forEach((cat)=>{
+                                            if(cat["enabled"] == 1 && cat["type"] == 'tertiary'){%>
+                                            <option value="<%=cat["name"] %>"><%=cat["name"] %>
+                                            </option>
+                                            <%} })%>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="quaternary_category">Quaternary</label>
+                                    <select class="custom-select select2" name="quaternary_category"
+                                        id="quaternary_category">
+                                        <option value=""></option>
+                                        <% category.forEach((cat)=>{
+                                            if(cat["enabled"] == 1 && cat["type"] == 'quaternary'){%>
+                                            <option value="<%=cat["name"]%>"><%=cat["name"]%>
+                                            </option>
+                                            <%} })%>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h5 class="card-title">Product Basic Details</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="input-group mb-3" aria-label="Product Name" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-signature"></i></span>
+                            </div>
+                            <input name ="name" type="text" class="form-control" placeholder="Product Name">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Art Form" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-palette"></i></span>
+                            </div>
+                            <input name="art_form" type="text" class="form-control" placeholder="Art Form">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Art Pattern" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fab fa-deviantart"></i></span>
+                            </div>
+                            <input name="pattern" type="text" class="form-control" placeholder="Art Pattern">
+                        </div>
+                        <div class="input-group mb-3" aria-label="SKU (Product Code)" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-fingerprint"></i></span>
+                            </div>
+                            <input name="sku" type="text" class="form-control" placeholder="SKU (Product Code)">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Dimension" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-ruler-combined"></i></span>
+                            </div>
+                            <input id="dlength" type="text" class="form-control" placeholder="Length">
+                            <input id="dbreadth" type="text" class="form-control" placeholder="Breadth">
+                            <input id="dheight" type="text" class="form-control" placeholder="Height">
+
+                        </div>
+                        <div class="input-group mb-3" aria-label="Color" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-paint-brush"></i></span>
+                            </div>
+                            <input name="color" type="text" class="form-control" placeholder="Color">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Artist Name" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fab fa-artstation"></i></span>
+                            </div>
+                            <input name="artist" type="text" class="form-control" placeholder="Artist Name">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Snippet (One Liner)" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-quote-left"></i></span>
+                            </div>
+                            <input name="snippet" type="text" class="form-control" placeholder="Snippet (One Liner)">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Occassion" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-dragon"></i></span>
+                            </div>
+                            <input name="occasion" type="text" class="form-control" placeholder="Occassion">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Description" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-keyboard"></i></span>
+                            </div>
+                            <textarea name="description"  style="width: calc(100% - 43px);"></textarea>
+                        </div>
+                        <div class="input-group-prepend mb-3">
+                            <div class="input-group-text"><i class="fas fa-hashtag"></i></div>
+                            <select class="select2" multiple="multiple" data-placeholder="Select Tags"
+                                style="width: 100%;" name="tags" id="tags">
+                                <% tags.forEach((tag)=>{
+                                    if(tag["enabled"] == 1){%>
+                                    <option value="<%=tag["name"] %>"><%=tag["name"] %>
+                                    </option>
+                                    <%} })%>
+                            </select>
+                        </div>
+                        <div class="input-group-prepend mb-3">
+                            <div class="input-group-text"><i class="fas fa-link"></i></div>
+                            <select class="select2" multiple="multiple" data-placeholder="Select Realted Products"
+                                style="width: 100%;" name="related" id="related">
+                                <% tags.forEach((tag)=>{
+                                    if(tag["enabled"] == 1){%>
+                                    <option value="<%=tag["name"] %>"><%=tag["name"] %>
+                                    </option>
+                                    <%} })%>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="input-group mb-3" aria-label="Location & Sponser" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fab fa-artstation"></i></span>
+                            </div>
+                            <input name="location" type="text" class="form-control" placeholder="Location">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fab fa-artstation"></i></span>
+                            </div>
+                            <input name="sponser" type="text" class="form-control" placeholder="Sponser">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h5 class="card-title">Product Price</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3" aria-label="Price" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
+                            </div>
+                            <input name="price" type="text" class="form-control" placeholder="Price">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Discount type" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fab fa-typo3"></i></span>
+                            </div>
+                            <select class="custom-select select2" name="discount_type">
+                                <option value="Absolute">Absolute</option>
+                                <option value="Percent">Percentage</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3" aria-label="Discount Value" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-piggy-bank"></i></span>
+                            </div>
+                            <input name="discount_value" type="text" class="form-control" placeholder="Discount Value">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="input-group mb-3" aria-label="Product Date" data-balloon-pos="up-left">
+                            <div class="input-group-prepend" data-target="#productdate" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                            <input name="productdate" type="text" class="form-control datetimepicker-input" data-target="#productdate"
+                                placeholder="Product Date" name="productdate" id="productdate" />
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
+                            </div>
+                            <input name="finalprice" class="form-control is-valid" type="text" readonly placeholder="Final Price"
+                                value="0.00">
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-danger">
+                    <div class="card-header">
+                        <h5 class="card-title">Merchandising Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3" aria-label="Collaborated Artist" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fab fa-creative-commons-by"></i></span>
+                            </div>
+                            <input name="collaborated_artist" type="text" class="form-control" placeholder="Collaborated Artist"
+                                name="collaborated_artist">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Number of Attendees" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-stopwatch-20"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Number of Attendees"
+                                name="number_of_attendees">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Year" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fab fa-yoast"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Year" name="year">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Quality" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fab fa-gripfire"></i></span>
+                            </div>
+                            <select class="custom-select select2" name="quality">
+                                <option value="best">Best</option>
+                                <option value="better">Better</option>
+                                <option value="good">Good</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3" aria-label="Duration" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-radiation-alt"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Duration" name="duration">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Ribbon Text" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-ribbon"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Ribbon Text" name="ribbon">
+                        </div>
+                        <div class="input-group mb-3" aria-label="Sash Text" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-slash"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Sash Text" name="sash">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="input-group mb-3" aria-label="Copyright & Trademark" data-balloon-pos="up-left">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-copyright"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Copyright" value="DesignPoint" name="copyright">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-trademark"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="TradeMark" value="DesignPoint" name="trademark">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h5 class="card-title">Product Picture
+                    </h5>
+                    <i class="fas fa-chevron-circle-down float-right" id="img-down"></i>
+                </div>
+                <div class="card-body" id="img-down-card">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h5 class="card-title">Primary | Secondary Image</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group mb-3" aria-label="Primary Image" data-balloon-pos="up-left">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-image"></i></span>
+                                        </div>
+                                        <input name="primary_img" type="text" class="form-control" placeholder="Primary Image" id="priimg">
+                                    </div>
+                                    <div class="input-group mb-3" aria-label="Secondary Image 1"
+                                        data-balloon-pos="up-left">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-file-image"></i></span>
+                                        </div>
+                                        <input name="secondary_img1" type="text" class="form-control" placeholder="Secondary Image 1"
+                                            id="secimg1">
+                                    </div>
+                                    <div class="input-group mb-3" aria-label="Secondary Image 2"
+                                        data-balloon-pos="up-left">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-file-image"></i></span>
+                                        </div>
+                                        <input name="secondary_img2" type="text" class="form-control" placeholder="Secondary Image 2"
+                                            id="secimg2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h5 class="card-title">Gallery Images</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group mb-3" aria-label="Gallery Image" data-balloon-pos="up-left">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-images"></i></span>
+                                        </div>
+                                        <textarea name="gallery_img" placeholder="Gallery Image" id="galimg" style="width: calc(100% - 50px);"></textarea>
+                                        <!-- <input type="text" class="form-control" placeholder="Gallery Image" id="galimg"> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <%images.forEach((image)=>{%>
+                            <div class="col-sm-2 prodimg" imageid="<%=image["id"]%>">
+                                <button type="button" class="btn imgsel pri btn-outline-success btn-sm">Primary</button>
+                                <button type="button" class="btn imgsel sec1 btn-outline-success btn-sm">Secondary
+                                    1</button>
+                                <button type="button" class="btn imgsel sec2 btn-outline-success btn-sm">Secondary
+                                    2</button>
+                                <button type="button" class="btn imgsel gal btn-outline-success btn-sm">Gallery</button>
+                                <div class="imgid"><%=image["id"]%></div>
+                                <a href="<%=image["imagepath"]%>" data-toggle="lightboxs" data-title="
+                                    <%=image["name"]%>"
+                                        data-gallery="gallery" title="<%=image["name"]%>">
+                                            <img src="<%=image["thumbnailpath"]%>" class="img-fluid mb-2">
+                                </a>
+                            </div>
+                            <%})%>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h5 class="card-title"> Testimonials
+                        </h5>   
+                        <i class="fas fa-chevron-circle-down float-right" id="testi-down"></i>
+                    </div>
+                    <div class="card-body" id="testi-down-card">
+                        <div class="row testimonials-container" id="testimonial-body">
+                                <div class="input-group col-sm-8" aria-label="Testinomial" data-balloon-pos="up-left">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-quote-right"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control testitext" placeholder="Testinomial">
+                                </div>
+                                <div class="input-group col-sm-4" aria-label="Customer Name" data-balloon-pos="up-left">
+                                    <input type="text" class="form-control testiname" placeholder="Customer Name">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="far fa-user-circle"></i></span>
+                                    </div>
+                                </div>                        
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <i class="fas fa-plus-circle testimonial-plus"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.testimonial-plus').click(function(){
+            copytest = $('#testimonial-body').clone();
+            copytest.removeAttr('id')
+            $('#testi-down-card').append(copytest);
+        })
+        $('.imgsel').click(function () {
+            var id = $(this).parent().attr('imageid');
+            // alert(id)
+            if ($(this).hasClass('pri')) {
+                $('#priimg').val(id)
+            }
+            if ($(this).hasClass('sec1')) {
+                $('#secimg1').val(id)
+            }
+            if ($(this).hasClass('sec2')) {
+                $('#secimg2').val(id)
+            }
+            if ($(this).hasClass('gal')) {
+                var prevval = $('#galimg').val();
+                if(prevval.trim()!="")
+                    $('#galimg').val(prevval+";"+id)
+                else
+                    $('#galimg').val(id)
+            }
+        })
+        $('#testi-down').click(function(){
+            $('#testi-down-card').toggle()
+        })
+        $('#img-down').click(function(){
+            $('#img-down-card').toggle()
+        })
+        $('.select2').select2()
+        $('#resetform').click(function () {
+            $('#createproductform').trigger('reset');
+        })
+        $('#saveproduct').click(function () {
+            console.log($('#createproductform').serialize())
+            var valid = true;
+            var dimen = $('#dlength').val()+"/"+$('#dbreadth').val()+"/"+$('#dheight').val();
+            var testi = "";
+            $('.testimonials-container').each(function(tc){
+                txt = $(this).find('.testitext').val()
+                nam = $(this).find('.testiname').val()
+                testi+= txt+"~~~"+nam+";;;"
+            })
+            if (valid) {
+                $.ajax({
+                    url: $('#createproductform').attr('action'),
+                    method: 'post',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: $('#createproductform').serialize()+"&testimonials="+testi+"&dimension="+dimen,
+                    success: function (data) {
+                        console.log(data);
+                        $('input,select').css('border-color', '');
+                        if (data.status) {
+                            Toast.fire({
+                                icon: "success",
+                                title: data.message
+                            })
+                            // $('#createproductform').trigger('reset');
+
+                        } else {
+                            Toast.fire({
+                                icon: "error",
+                                title: data.message
+                            })
+                        }
+                        // $('#createproductform').trigger('reset');
+                    }
+                })
+            }
+            else {
+                Toast.fire({
+                    icon: "error",
+                    title: "- - Please Enter Valid Data."
+                })
+            }
+        })
+
+    })
+</script>

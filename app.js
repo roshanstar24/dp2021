@@ -23,9 +23,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.set('view engine', 'ejs');
 
-app.use('/site/assets', express.static(path.join(__dirname, 'assets/site')));
-app.use('/admin/assets', express.static(path.join(__dirname, 'assets/admin')));
-app.use('/assets/uploads', express.static(path.join(__dirname, 'assets/uploads')));
+app.use('/assets/site', express.static(path.join(__dirname, 'assets','site')));
+app.use('/assets/admin', express.static(path.join(__dirname, 'assets','admin')));
+app.use('/assets/uploads', express.static(path.join(__dirname, 'assets','uploads')));
 
 
 

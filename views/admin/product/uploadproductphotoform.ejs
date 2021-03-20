@@ -1,0 +1,112 @@
+<!-- Ekko Lightbox -->
+<link rel="stylesheet" href="/assets/admin/plugins/ekko-lightbox/ekko-lightbox.css">
+<style>
+    a[data-toggle=lightboxs] img {
+        max-width: 150px;
+        max-height: 200px;
+        min-width: 150px;
+        min-height: 200px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Upload Product Picture</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form class="form-horizontal" method="POST" id="uploadproductimgform" enctype="multipart/form-data"
+                    href="/admin/uploadproductimg">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>File input</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" accept="image/png,image/jpeg"
+                                        name="productimg">
+                                    <label class="custom-file-label"></label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="input-group-text" type="submit" id="uploadproductimg">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </form>
+            </div>
+            <!-- /.card -->
+        </div>
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4 class="card-title">Gallery Uploaded Image</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <%images.forEach((image)=>{%>
+                            <div class="col-sm-2">
+                                <a href="<%=image["imagepath"]%>" data-toggle="lightboxs" data-title="
+                                    <%=image["name"]%>"
+                                        data-gallery="gallery">
+                                        <img src="<%=image["thumbnailpath"]%>" class="img-fluid mb-2">
+                                </a>
+                            </div>
+                            <%})%>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+
+<!-- Ekko Lightbox -->
+<script src="/assets/admin/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000
+        });
+
+        $("#uploadproductimgform").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: $(this).attr('href'),
+                type: 'POST',
+                data: formData,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    Toast.fire({
+                        icon: "success",
+                        "title": data.message
+                    }),
+                        $('#uploadproductimgform').trigger('reset');
+                    $('.custom-file-label').html('')
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+        $(".custom-file-input").change(function () {
+            filename = ($(this).val()).substr($(this).val().lastIndexOf('\\') + 1);
+            $(this).next('.custom-file-label').html(filename)
+        })
+    })
+
+</script>

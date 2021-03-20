@@ -25,7 +25,8 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <!-- <img class="profile-user-img img-fluid img-circle" src="" alt="User profile picture"> -->
+                            <img class="profile-user-img img-fluid img-circle" src="<%=profiledata["picture"]%>"
+                                alt="User profile picture" style="width:75%">
                         </div>
 
                         <h3 class="profile-username text-center"><%=profiledata["name"]%></h3>
@@ -81,7 +82,7 @@
                             </li> -->
                         </ul>
 
-                        <a href="#" class="btn btn-primary btn-block"><b>Reset Password</b></a>
+                        <!-- <a href="#" class="btn btn-primary btn-block"><b>Reset Password</b></a> -->
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -418,7 +419,7 @@
 </section>
 <!-- /.content -->
 <!-- Bootstrap 4 -->
-<script src="/admin/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -503,5 +504,12 @@
 
             }
         })
+    })
+</script>
+
+<script>
+    $(".custom-file-input").change(function () {
+        filename = ($(this).val()).substr($(this).val().lastIndexOf('\\') + 1);
+        $(this).next('.custom-file-label').html(filename)
     })
 </script>

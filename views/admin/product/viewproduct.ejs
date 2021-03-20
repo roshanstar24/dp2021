@@ -1,0 +1,169 @@
+<!-- DataTables -->
+<link rel="stylesheet" href="/assets/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="/assets/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="/assets/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+<link rel="stylesheet" href="/assets/admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<!-- SweetAlert2 -->
+<script src="/assets/admin/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+<style>
+    .coverimg{
+        pointer-events: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        top: 0;
+        left: 0;
+    }
+
+    .editteam {
+        cursor: pointer;
+        color: indigo;
+    }
+
+    .deleteteam {
+        cursor: copy;
+        color: red;
+    }
+    .widget-user-username, .widget-user-desc{
+        position: relative;
+    }
+    .widget-user-header{
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+    }
+</style>
+
+<div class="row">
+    <%product.forEach(prod=>{%>
+        <%
+        let pthumbnail = idtosrc[prod.primary_img]["thumbnail"];
+        let coverthumbnail = idtosrc[prod.secondary_img2]["thumbnail"];
+        %>
+        <div class="col-md-4 card card-primary card-outline">
+            <div class="card-header">
+                <div class="card card-widget widget-user shadow-lg">
+                <div class="widget-user-header text-white">
+                    <img class="coverimg" src="<%=coverthumbnail%>">
+                    <h3 aria-label="Product Name" data-balloon-pos="bottom-left" class="widget-user-username text-right"><%=prod.name%></h3>
+                    <h5 aria-label="Art and Artist" data-balloon-pos="bottom-left"class="widget-user-desc text-right"><%=prod.art_form+" | "+ prod.artist%></h5>
+                </div>
+                <div class="widget-user-image">
+                    <img class="img-circle" src="<%=pthumbnail%>" alt="">
+                </div>
+                <div class="card-footer ">
+                    <div class="row">
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                            <h5 aria-label="Final Price`" data-balloon-pos="bottom-left" class="description-header"><%=prod.finalprice%></h5>
+                            <span aria-label="Discount Type" data-balloon-pos="bottom-left" class="description-text"><%=prod.discount_type%></span><br>
+                            <span aria-label="Discount Value" data-balloon-pos="bottom-left" class="description-text"><%=prod.discount_value%></span><br>
+                            <span aria-label="Product Price" data-balloon-pos="bottom-left" class="description-text"><%=prod.price%></span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4 border-right">
+                            <div class="description-block">
+                                <h5 aria-label="Pattern" data-balloon-pos="bottom-left" class="description-header"><%=prod.pattern%></h5>
+                                <span aria-label="Dimension L*B*H" data-balloon-pos="bottom-left" class="description-text"><%=prod.dimension%></span><br>
+                                <span aria-label="Color" data-balloon-pos="bottom-left" class="description-text"><%=prod.color%></span><br>
+                                <span aria-label="Quality" data-balloon-pos="bottom-left" class="description-text"><%=prod.quality%></span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4">
+                            <div class="description-block">
+                                <h5 aria-label="Ribbob" data-balloon-pos="bottom-left" class="description-header"><%=prod.ribbon%></h5>
+                                <span aria-label="Sash" data-balloon-pos="bottom-left" class="description-text"><%=prod.sash%></span><br>
+                                <span aria-label="Occasion" data-balloon-pos="bottom-left" class="description-text"><%=prod.occasion%></span><br>
+                                <span aria-label="Location" data-balloon-pos="bottom-left" class="description-text"><%=prod.location%></span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <div class="card-footer p-0">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a aria-label="Primary Category" data-balloon-pos="bottom-left"  href="#" class="nav-link">
+                                <%=prod.primary_category%> 
+                            <span aria-label="Duration" data-balloon-pos="bottom-left" class="float-right badge bg-primary">Duration <%=prod.duration%></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a aria-label="Secondary Category" data-balloon-pos="bottom-left" href="#" class="nav-link">
+                                <%=prod.secondary_category%> 
+                            <span aria-label="Year" data-balloon-pos="bottom-left"  class="float-right badge bg-info">Year <%=prod.year%></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a aria-label="" data-balloon-pos="bottom-left" href="#" class="nav-link">
+                                <%=prod.tertiary_category%>  
+                                <span  aria-label="<%=prod.productdate%>" data-balloon-pos="bottom-right" class="float-right badge bg-success">Product Date</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a aria-label="Quadternary Category" data-balloon-pos="bottom-left" href="#" class="nav-link">
+                                <%=prod.quaternary_category%>
+                                 <span aria-label="Number of Attendees" data-balloon-pos="bottom-left"  class="float-right badge bg-danger">Attendee <%=prod.number_of_attendees%></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a aria-label="Snippet (One Liner)" data-balloon-pos="bottom-right"  href="#" class="nav-link">
+                                <%=prod.snippet%>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a aria-label="Snippet (One Liner)" data-balloon-pos="bottom-right"  href="#" class="nav-link">
+                                <%=prod.tags%>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a aria-label="Snippet (One Liner)" data-balloon-pos="bottom-right"  href="#" class="nav-link">
+                                <%=prod.related%>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a aria-label="Snippet (One Liner)" data-balloon-pos="bottom-right"  href="#" class="nav-link">
+                                <%=prod.collaborated_artist%>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                Description
+                                <span aria-label="<%=prod.description%>" data-balloon-pos="bottom-left"  class="float-right badge bg-danger">Hover Here</span>  
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                Testimonials
+                                <span aria-label="<%=prod.testimonials%>" data-balloon-pos="bottom-left"  class="float-right badge bg-danger">Hover Here</span>  
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="input-group">
+                                <input type="text" disabled value="<%=prod.id%>" name="id" class="form-control">
+                                <span class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                </div>
+                <!-- /.widget-user -->
+            </div>
+        </div>    
+    <%})%>
+    
+    
+ </div>

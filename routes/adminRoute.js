@@ -39,6 +39,31 @@ adminRoute.post('/deletetag', adminControl.deleteTag);
 adminRoute.post('/edittag', adminControl.editTag);
 adminRoute.post('/updatetag', adminControl.updateTag);
 
+//----------- CATEGORY
+adminRoute.get('/addcategory', adminControl.addCategoryForm);
+adminRoute.get('/viewcategory', adminControl.viewCategory);
+adminRoute.post('/addnewcategory', adminControl.addNewCategory);
+adminRoute.post('/deletecategory', adminControl.deleteCategory);
+adminRoute.post('/editcategory', adminControl.editCategory);
+adminRoute.post('/updatecategory', adminControl.updateCategory);
+
+//----------- PRODUCT
+adminRoute.get('/uploadproductphotoform', adminControl.uploadProductPhotoForm);
+adminRoute.post('/uploadproductimg', adminControl.uploadProductIMG);
+
+
+adminRoute.get('/addproduct', adminControl.addProductForm);
+adminRoute.post('/addnewproduct', adminControl.addNewProduct);
+// adminRoute.post('/verifyemail', adminControl.verifyemail);
+adminRoute.get('/viewproduct', adminControl.viewProduct);
+// adminRoute.post('/deleteproduct', adminControl.deleteProduct);
+adminRoute.post('/editproduct', adminControl.editProduct);
+// adminRoute.post('/updateproduct', adminControl.updateProduct);
+// adminRoute.post('/showprofile', adminControl.showProfile);
+// adminRoute.post('/changepassword', adminControl.changePassword);
+// adminRoute.post('/uploadprofilephoto', adminControl.uploadProfilePhoto);
+
+
 adminRoute.get('/', (req, res) => {
     res.send("Proceed to Login")
 })

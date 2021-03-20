@@ -1,0 +1,110 @@
+<link rel="stylesheet" href="/assets/admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <a class="btn btn-app bg-success col-sm-5" id="savecategory">
+                    <i class="fas fa-users"></i> Add New category
+                </a>
+                <a class="btn btn-app bg-danger col-sm-5" id="resetform">
+                    <i class="fas fa-inbox"></i> Reset Form
+                </a>
+            </div><!-- /.col -->
+
+
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<div class="container-fluid">
+    <form action="/admin/addnewcategory" method="POST" id="createcategoryform">
+        <div class="row">
+            <div class="col-md-6 card">
+                <div class="card-header">
+                    <h5 class="card-title">Category Details</h5>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-2 col-form-label">Type</label>
+                            <div class="col-sm-10">
+                                <select class="custom-select" name="type">
+                                    <%if(user !== null){
+                                    if(user.logged_in){
+                                        if(user.loginuser.role == "Admin"){
+                                            %><option value="primary">Primary</option><%
+                                        }
+                                    }
+                                }%>
+                                    <option value="secondary">Secondary - 2nd Level</option>
+                                    <option value="tertiary">Tertiary - 3rd Level</option>
+                                    <option value="quaternary">Quaternary - 4th Level</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#resetform').click(function () {
+            $('#createcategoryform').trigger('reset');
+        })
+
+        $('#savecategory').click(function () {
+            console.log($('#createcategoryform').serialize())
+            var valid = true;
+            if (emptyvalidation($('#name'))) { valid = false }
+
+            if (valid) {
+                $.ajax({
+                    url: $('#createcategoryform').attr('action'),
+                    method: 'post',
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: $('#createcategoryform').serialize(),
+                    success: function (data) {
+                        console.log(data);
+                        $('input,select').css('border-color', '');
+                        console.log(data.status)
+                        if (data.status) {
+                            Toast.fire({
+                                icon: "success",
+                                title: data.message
+                            })
+                            $('#createcategoryform').trigger('reset');
+                        } else {
+                            Toast.fire({
+                                icon: "error",
+                                title: data.message
+                            })
+                        }
+                    }
+                })
+            }
+            else {
+                Toast.fire({
+                    icon: "error",
+                    title: "- - Please Enter Valid Data."
+                })
+            }
+        })
+    })
+</script>

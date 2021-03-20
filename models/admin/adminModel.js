@@ -1,7 +1,11 @@
-
 const team = require('./../team');
 const customer = require('./../customer');
 const tag = require('./../tag');
+const category = require('./../category');
+const image = require('./../images');
+const product = require('./../product');
+const product_master = require('./../product');
+
 
 exports.loginAuth = (username) => {
     console.log(username + "--")
@@ -84,6 +88,66 @@ exports.updateTag = (data) => {
     return tag.update(data, { where: { id: data.id } })
 }
 
+//----------------------------------------------------------------------------
+/* TAGS */
+
+
+exports.storeCategory = (data) => {
+    return category.create(data)
+}
+
+exports.deleteCategory = (data) => {
+    return category.update({ "enabled": 0, "last_modified_by": data.last_modified_by }, { "where": { id: data.id } })
+}
+
+exports.getCategory = () => {
+    return category.findAll({ raw: true });
+}
+
+exports.getOneCategory = (data) => {
+    console.log(data)
+    return category.findOne({ where: { id: data.id } });
+}
+
+exports.updateCategory = (data) => {
+
+    console.log("====================")
+    console.log(data)
+    return category.update(data, { where: { id: data.id } })
+}
+
+//---------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------
+/* IMAGES */
+
+
+exports.storeImage = (data) => {
+    return image.create(data)
+}
+
+exports.deleteImage = (data) => {
+    return image.update({ "enabled": 0, "last_modified_by": data.last_modified_by }, { "where": { id: data.id } })
+}
+
+exports.getImage = () => {
+    return image.findAll({ order: [['createdAt', 'DESC']], limit: 30 }, { raw: true });
+}
+exports.getAllImage = () => {
+    return image.findAll( { raw: true });
+}
+
+exports.getOneImage = (data) => {
+    console.log(data)
+    return image.findOne({ where: { id: data.id } });
+}
+
+exports.updateImage = (data) => {
+
+    console.log("====================")
+    console.log(data)
+    return image.update(data, { where: { id: data.id } })
+}
 
 exports.verifyemail = (data) => {
     // // console.log("model")
@@ -93,3 +157,17 @@ exports.verifyemail = (data) => {
     return team.findOne(({ where: data }))
 }
 
+exports.storeProduct = (data) => {
+    console.log(data)
+    return product.create(data)
+}
+
+exports.getOneProduct = (data) => {
+    console.log(data)
+    console.log('()()()()()()()(()())()()0)00')
+    return product.findOne({ where: { id: data.id } });
+}
+
+exports.getProduct = () => {
+    return product.findAll({ raw: true },{ order: [['createdAt', 'DESC']] });
+}

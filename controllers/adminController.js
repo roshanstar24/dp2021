@@ -1,7 +1,12 @@
 const adminModel = require('../models/admin/adminModel');
+const adminQuery = require('../models/admin/adminQuery');
 const express = require('express');
+const fs = require('fs')
 const path = require('path')
 const app = express();
+const imageThumbnail = require('image-thumbnail');
+const { REPL_MODE_SLOPPY } = require('repl');
+const { render } = require('../routes/adminRoute');
 
 var renderdata = {};
 
@@ -240,7 +245,7 @@ exports.uploadProfilePhoto = (req, res) => {
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     sampleFile = req.files.uploadphoto;
     var ext = req.files.uploadphoto.name.substr(req.files.uploadphoto.name.lastIndexOf('.') + 1);
-    var __relativepath = '/assets/uploads/profile/' + (req.session.loginuser.id + '.' + ext)
+    var __relativepath = path.join('/', 'assets', 'uploads', 'profile', (req.session.loginuser.id + '.' + ext))
     uploadPath = path.join(__basedir, __relativepath);
     console.log(uploadPath)
     // Use the mv() method to place the file somewhere on your server
@@ -248,9 +253,19 @@ exports.uploadProfilePhoto = (req, res) => {
         if (err) {
             return res.status(500).send({ status: false, message: err });
         }
-        adminModel.saveProfileURL({ id: req.session.loginuser.id, path: __relativepath }).then((data) => {
-            res.send({ status: true, message: "Display Picture File Uploaded !" });
-        })
+        else {
+            try {
+                imageThumbnail(uploadPath).then((thumbnail) => {
+                    fs.writeFileSync(uploadPath + "_thumbnail.jpeg", thumbnail)
+                });
+
+            } catch (err) {
+                console.error(err);
+            }
+            adminModel.saveProfileURL({ id: req.session.loginuser.id, path: __relativepath }).then((data) => {
+                res.send({ status: true, message: "Display Picture File Uploaded !" });
+            })
+        }
     });
 }
 //--------------------------------------------------------------------------------------------------------------
@@ -336,6 +351,203 @@ exports.updateTag = (req, res) => {
         res.send({ status: false, 'message': err.parent.sqlMessage });
     })
 }
+
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+/* CATEGORY */
+
+exports.addCategoryForm = (req, res) => {
+    console.log(req.session)
+    res.render('admin/category/addcategory', { "user": req.session })
+}
+
+exports.addNewCategory = (req, res) => {
+    req.body["published_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email
+    adminModel.storeCategory(req.body).then((data) => {
+        res.send({ status: true, 'message': '  Category Added.' });
+    }).catch((err) => {
+        console.log('-------------------------------------------------------')
+        console.log(err.parent.sqlMessage)
+        console.log('-------------------------------------------------------')
+        res.send({ status: false, 'message': err.parent.sqlMessage });
+    })
+}
+
+exports.viewCategory = (req, res) => {
+    adminModel.getCategory().then((data) => {
+        renderdata["category"] = data;
+        renderdata["loginuser"] = req.session.loginuser
+        res.render('admin/category/viewcategory', renderdata)
+    })
+}
+
+exports.deleteCategory = (req, res) => {
+    req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email
+    adminModel.deleteCategory(req.body).then(() => {
+        res.send({ status: true, 'message': '  Category Deleted.' });
+    }).catch((err) => {
+        console.log('-------------------------------------------------------')
+        console.log(err.parent.sqlMessage)
+        console.log('-------------------------------------------------------')
+        res.send({ status: false, 'message': err.parent.sqlMessage });
+    })
+}
+exports.editCategory = (req, res) => {
+    req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email
+    adminModel.getOneCategory(req.body).then((data) => {
+        renderdata["category"] = data;
+        renderdata["loginuser"] = req.session.loginuser
+        res.render('admin/category/editcategory', renderdata)
+    }).catch((err) => {
+        console.log('-------------------------------------------------------')
+        console.log(err.parent.sqlMessage)
+        console.log('-------------------------------------------------------')
+        res.send({ status: false, 'message': err.parent.sqlMessage });
+    })
+}
+exports.updateCategory = (req, res) => {
+    req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email
+    console.log("Category UPDATES")
+    adminModel.updateCategory(req.body).then((data) => {
+        res.send({ status: true, 'message': "Category Updated Successfully" });
+    }).catch((err) => {
+        console.log('-------------------------------------------------------')
+        console.log(err.parent.sqlMessage)
+        console.log('-------------------------------------------------------')
+        res.send({ status: false, 'message': err.parent.sqlMessage });
+    })
+}
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------
+/** PRODUCT */
+
+exports.uploadProductPhotoForm = (req, res) => {
+    adminModel.getImage().then((data) => {
+        console.log(data)
+        renderdata["images"] = data;
+        console.log(renderdata)
+        res.render('admin/product/uploadproductphotoform', renderdata)
+    });
+}
+exports.uploadProductIMG = (req, res) => {
+    let sampleFile;
+    let uploadPath;
+    console.log('***************************************')
+    console.log(req.files)
+    console.log('***************************************')
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send({ status: false, message: 'No files were uploaded.' });
+    }
+
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    sampleFile = req.files.productimg;
+    milisecond = new Date().getTime()
+    var ext = sampleFile.name.substr(sampleFile.name.lastIndexOf('.') + 1);
+    var __relativepath = path.join('\\', 'assets', 'uploads', 'product', sampleFile.name + milisecond + "." + ext)
+    var __thumbnailpath = path.join('\\', 'assets', 'uploads', 'product', 'thumbnails', sampleFile.name + milisecond + "." + ext)
+    uploadPath = path.join(__basedir, __relativepath);
+    thumbnailpath = path.join(__basedir, __thumbnailpath);
+    console.log(uploadPath)
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv(uploadPath, function (err) {
+        if (err) {
+            return res.status(500).send({ status: false, message: err });
+        }
+        else {
+            try {
+                imageThumbnail(uploadPath).then((thumbnail) => {
+                    fs.writeFileSync(thumbnailpath, thumbnail)
+                });
+
+            } catch (err) {
+                console.error(err);
+            }
+            adminModel.storeImage({
+                name: sampleFile.name + milisecond + "." + ext,
+                imagepath: __relativepath,
+                thumbnailpath: __thumbnailpath
+            }).then((data) => {
+                res.send({ status: true, message: "Product Image Uploaded !" });
+            })
+        }
+    });
+}
+exports.addProductForm = (req, res) => {
+    adminModel.getCategory().then((cat) => {
+        renderdata["category"] = cat;
+        adminModel.getTag().then((tags) => {
+            renderdata["tags"] = tags;
+            adminModel.getImage().then((data) => {
+                console.log(data)
+                renderdata["images"] = data;
+                console.log(renderdata)
+                res.render('admin/product/addproduct', renderdata)
+            });
+        });
+    });
+}
+
+exports.addNewProduct = (req, res) => {
+    req.body["published_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email;
+    console.log(req.body.tags)
+    console.log(req.body.related)
+    if (req.body.tags) req.body.tags = req.body.tags.join(',');
+    if (req.body.related) req.body.related = req.body.related.join(',');
+    if (adminModel.storeProduct(req.body)) {
+        res.send({ status: true, 'message': '  Product Added.' });
+    }
+    else {
+        res.send({ status: false, 'message': '  Product Not Added.' });
+    }
+
+}
+exports.viewProduct = (req, res) => {
+    adminModel.getProduct().then((data) => {
+        renderdata["product"] = data;
+        renderdata["loginuser"] = req.session.loginuser;
+        adminModel.getAllImage().then(data=>{
+            let idtosrc =[]
+            data.forEach(d=>{
+                idtosrc[d.id]={img :d.imagepath, thumbnail : d.thumbnailpath, name:d.name}
+            })
+            renderdata["idtosrc"]=idtosrc;
+            console.log("+_+_+_+_+__+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
+            console.log(renderdata)
+            res.render('admin/product/viewproduct', renderdata)
+        })
+    })
+}
+
+function idtosrc(){
+    let idtosrc = [];
+    
+}
+exports.editProduct = (req, res) => {
+    req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email;
+    adminModel.getCategory().then((cat) => {
+        renderdata["category"] = cat;
+        adminModel.getTag().then((tags) => {
+            renderdata["tags"] = tags;
+            adminModel.getImage().then((img) => {
+                renderdata["images"] = img;
+                adminModel.getOneProduct(req.body).then(prod=>{
+                    renderdata["product"] = prod
+                    console.log(renderdata)
+                    res.render('admin/product/editproduct', renderdata)
+                })
+            });
+        });
+    }).catch((err) => {
+        console.log('-------------------------------------------------------')
+        console.log(err.parent.sqlMessage)
+        console.log('-------------------------------------------------------')
+        res.send({ status: false, 'message': err.parent.sqlMessage });
+    })
+}
+
 
 exports.logout = (req, res) => {
     req.session.destroy()
