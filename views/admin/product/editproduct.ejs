@@ -70,6 +70,7 @@
                                 <div class="form-group">
                                     <label for="primary_category">Primary</label>
                                     <select class="custom-select select2" name="primary_category" id="primary_category">
+                                        <option value=""></option>
                                         <% category.forEach((cat)=>{
                                             if(cat["enabled"] == 1 && cat["type"] == 'primary'){%>
                                             <option value="<%=cat["name"] %>"
@@ -88,7 +89,7 @@
                                         <% category.forEach((cat)=>{
                                             if(cat["enabled"] == 1 && cat["type"] == 'secondary'){%>
                                             <option value="<%=cat["name"] %>"
-                                                <% product.secondary_category == cat["name"] ? 'selected' : ''%>
+                                                <%=product.secondary_category == cat["name"] ? 'selected' : ''%>
                                                 ><%=cat["name"] %>
                                             </option>
                                             <%} })%>
@@ -103,7 +104,7 @@
                                         <% category.forEach((cat)=>{
                                             if(cat["enabled"] == 1 && cat["type"] == 'tertiary'){%>
                                             <option value="<%=cat["name"] %>"
-                                                <% product.tertiary_category == cat["name"] ? 'selected' : ''%>
+                                                <%=product.tertiary_category == cat["name"] ? 'selected' : ''%>
                                                 ><%=cat["name"] %>
                                             </option>
                                             <%} })%>
@@ -119,7 +120,7 @@
                                         <% category.forEach((cat)=>{
                                             if(cat["enabled"] == 1 && cat["type"] == 'quaternary'){%>
                                             <option value="<%=cat["name"]%>"
-                                                <% product.quaternary_category == cat["name"] ? 'selected' : ''%>
+                                                <%=product.quaternary_category == cat["name"] ? 'selected' : ''%>
                                                 ><%=cat["name"]%>
                                             </option>
                                             <%} })%>
@@ -168,9 +169,12 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-ruler-combined"></i></span>
                             </div>
-                            <input id="dlength" type="text" class="form-control" placeholder="Length">
-                            <input id="dbreadth" type="text" class="form-control" placeholder="Breadth">
-                            <input id="dheight" type="text" class="form-control" placeholder="Height">
+                            <%if(product.dimension){
+                                var dim = (product.dimension).split('/');
+                            }%>
+                            <input id="dlength" value="<%=dim[0]%>" type="text" class="form-control" placeholder="Length">
+                            <input id="dbreadth" value="<%=dim[1]%>" type="text" class="form-control" placeholder="Breadth">
+                            <input id="dheight" value="<%=dim[2]%>" type="text" class="form-control" placeholder="Height">
 
                         </div>
                         <div class="input-group mb-3" aria-label="Color" data-balloon-pos="up-left">
@@ -195,32 +199,30 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-dragon"></i></span>
                             </div>
-                            <input name="occassion" value="<%=product.occassion%>" type="text" class="form-control" placeholder="Occassion">
+                            <input name="occasion" value="<%=product.occasion%>" type="text" class="form-control" placeholder="Occassion">
                         </div>
                         <div class="input-group mb-3" aria-label="Description" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-keyboard"></i></span>
                             </div>
-                            <textarea name="description"  value="<%=product.description%>" style="width: calc(100% - 43px);"></textarea>
+                            <textarea name="description" style="width: calc(100% - 43px);"><%=product.description%></textarea>
                         </div>
                         <div class="input-group-prepend mb-3">
                             <div class="input-group-text"><i class="fas fa-hashtag"></i></div>
+                            <%if(product.tags && product.tags.trim()!=''){
+                                var tagarr = product.tags.split(',');
+                            }
+                            else{
+                                var tagarr = ['']
+                            }%>
                             <select class="select2" multiple="multiple" data-placeholder="Select Tags"
                                 style="width: 100%;" name="tags" id="tags">
+                                
                                 <% tags.forEach((tag)=>{
                                     if(tag["enabled"] == 1){%>
-                                    <option value="<%=tag["name"] %>"><%=tag["name"] %>
-                                    </option>
-                                    <%} })%>
-                            </select>
-                        </div>
-                        <div class="input-group-prepend mb-3">
-                            <div class="input-group-text"><i class="fas fa-link"></i></div>
-                            <select class="select2" multiple="multiple" data-placeholder="Select Realted Products"
-                                style="width: 100%;" name="related" id="related">
-                                <% tags.forEach((tag)=>{
-                                    if(tag["enabled"] == 1){%>
-                                    <option value="<%=tag["name"] %>"><%=tag["name"] %>
+                                    <option value="<%=tag["name"]%>"
+                                        <%=tagarr.indexOf(tag["name"]) > -1 ? 'selected' : ''%>
+                                        ><%=tag["name"] %>
                                     </option>
                                     <%} })%>
                             </select>
@@ -253,22 +255,26 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
                             </div>
-                            <input name="price" type="text" class="form-control" placeholder="Price">
+                            <input name="price" id="aprice"value="<%=product.price%>" type="number" class="form-control pricef" placeholder="Price">
                         </div>
                         <div class="input-group mb-3" aria-label="Discount type" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fab fa-typo3"></i></span>
                             </div>
-                            <select class="custom-select select2" name="discount-type">
-                                <option value="absolute">Absolute</option>
-                                <option value="percent">Percentage</option>
+                            <select class="custom-select select2 pricef" id="dtype"name="discount_type">
+                                <option value="Absolute"
+                                <%=product.discount_type == 'Absolute' ? 'selected' : ''%>
+                                >Absolute</option>
+                                <option value="Percentage"
+                                <%=product.discount_type == 'Percentage' ? 'selected' : ''%>
+                                >Percentage</option>
                             </select>
                         </div>
                         <div class="input-group mb-3" aria-label="Discount Value" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-piggy-bank"></i></span>
                             </div>
-                            <input name="discount_value" type="text" class="form-control" placeholder="Discount Value">
+                            <input name="discount_value" id="dprice"value="<%=product.discount_value%>" type="number" class="form-control pricef" placeholder="Discount Value">
                         </div>
                     </div>
                     <div class="card-footer">
@@ -276,13 +282,13 @@
                             <div class="input-group-prepend" data-target="#productdate" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
-                            <input name="productdate" type="text" class="form-control datetimepicker-input" data-target="#productdate"
+                            <input name="productdate" value="<%=product.productdate%>"type="text" class="form-control datetimepicker-input" data-target="#productdate"
                                 placeholder="Product Date" name="productdate" id="productdate" />
 
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
                             </div>
-                            <input name="finalprice" class="form-control is-valid" type="text" readonly placeholder="Final Price"
+                            <input name="finalprice" id="fprice" class="form-control is-valid" type="text" readonly placeholder="Final Price"
                                 value="0.00">
                         </div>
                     </div>
@@ -296,21 +302,21 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fab fa-creative-commons-by"></i></span>
                             </div>
-                            <input name="collaborated_artist" type="text" class="form-control" placeholder="Collaborated Artist"
+                            <input name="collaborated_artist" value="<%=product.collaborated_artist%>" type="text" class="form-control" placeholder="Collaborated Artist"
                                 name="collaborated_artist">
                         </div>
                         <div class="input-group mb-3" aria-label="Number of Attendees" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-stopwatch-20"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Number of Attendees"
+                            <input type="text" value="<%=product.number_of_attendees%>" class="form-control" placeholder="Number of Attendees"
                                 name="number_of_attendees">
                         </div>
                         <div class="input-group mb-3" aria-label="Year" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fab fa-yoast"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Year" name="year">
+                            <input type="text" value="<%=product.year%>" class="form-control" placeholder="Year" name="year">
                         </div>
                         <div class="input-group mb-3" aria-label="Quality" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
@@ -326,19 +332,19 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-radiation-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Duration" name="duration">
+                            <input type="text" value="<%=product.duration%>" class="form-control" placeholder="Duration" name="duration">
                         </div>
                         <div class="input-group mb-3" aria-label="Ribbon Text" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-ribbon"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Ribbon Text" name="ribbon">
+                            <input type="text" value="<%=product.ribbon%>" class="form-control" placeholder="Ribbon Text" name="ribbon">
                         </div>
                         <div class="input-group mb-3" aria-label="Sash Text" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-slash"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Sash Text" name="sash">
+                            <input type="text" value="<%=product.sash%>" class="form-control" placeholder="Sash Text" name="sash">
                         </div>
                     </div>
                     <div class="card-footer">
@@ -376,14 +382,14 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="far fa-image"></i></span>
                                         </div>
-                                        <input name="primary_img" type="text" class="form-control" placeholder="Primary Image" id="priimg">
+                                        <input name="primary_img" value="<%=product.primary_img%>"type="text" class="form-control" placeholder="Primary Image" id="priimg">
                                     </div>
                                     <div class="input-group mb-3" aria-label="Secondary Image 1"
                                         data-balloon-pos="up-left">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-file-image"></i></span>
                                         </div>
-                                        <input name="secondary_img1" type="text" class="form-control" placeholder="Secondary Image 1"
+                                        <input name="secondary_img1" value="<%=product.secondary_img1%>" type="text" class="form-control" placeholder="Secondary Image 1"
                                             id="secimg1">
                                     </div>
                                     <div class="input-group mb-3" aria-label="Secondary Image 2"
@@ -391,7 +397,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-file-image"></i></span>
                                         </div>
-                                        <input name="secondary_img2" type="text" class="form-control" placeholder="Secondary Image 2"
+                                        <input name="secondary_img2" value="<%=product.secondary_img2%>" type="text" class="form-control" placeholder="Secondary Image 2"
                                             id="secimg2">
                                     </div>
                                 </div>
@@ -407,7 +413,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="far fa-images"></i></span>
                                         </div>
-                                        <textarea name="gallery_img" placeholder="Gallery Image" id="galimg" style="width: calc(100% - 50px);"></textarea>
+                                        <textarea name="gallery_img" placeholder="Gallery Image" id="galimg" style="width: calc(100% - 50px);"><%=product.gallery_img%></textarea>
                                         <!-- <input type="text" class="form-control" placeholder="Gallery Image" id="galimg"> -->
                                     </div>
                                 </div>
@@ -445,20 +451,45 @@
                         <i class="fas fa-chevron-circle-down float-right" id="testi-down"></i>
                     </div>
                     <div class="card-body" id="testi-down-card">
+                        <%if(product.testimonials && product.testimonials.trim()!=''){
+                            var testim = (product.testimonials).split(';;;');
+                        }
+                        else{
+                            var testim = ['~~~']
+                        }%>
+                        <%=testim%>|||||||||||<%=product.testimonials%>
                         <div class="row testinomial-container" id="testimonial-body">
                                 <div class="input-group col-sm-8" aria-label="Testinomial" data-balloon-pos="up-left">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-quote-right"></i></span>
                                     </div>
-                                    <input type="text" class="form-control testitext" placeholder="Testinomial">
+                                    <input type="text" value="<%=testim[0].split('~~~')[0]%>" class="form-control testitext" placeholder="Testinomial">
                                 </div>
                                 <div class="input-group col-sm-4" aria-label="Customer Name" data-balloon-pos="up-left">
-                                    <input type="text" class="form-control testiname" placeholder="Customer Name">
+                                    <input type="text" value="<%=testim[0].split('~~~')[1]%>"class="form-control testiname" placeholder="Customer Name">
                                     <div class="input-group-append">
                                         <span class="input-group-text"><i class="far fa-user-circle"></i></span>
                                     </div>
                                 </div>                        
                         </div>
+                        <%if(testim.length > 1){
+                            for(i=1;i<testim.length-1;i++){%>
+                                <div class="row testinomial-container">
+                                    <div class="input-group col-sm-8" aria-label="Testinomial" data-balloon-pos="up-left">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-quote-right"></i></span>
+                                        </div>
+                                        <input type="text" value="<%=testim[i].split('~~~')[0]%>" class="form-control testitext" placeholder="Testinomial">
+                                    </div>
+                                    <div class="input-group col-sm-4" aria-label="Customer Name" data-balloon-pos="up-left">
+                                        <input type="text" value="<%=testim[i].split('~~~')[1]%>"class="form-control testiname" placeholder="Customer Name">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="far fa-user-circle"></i></span>
+                                        </div>
+                                    </div>                        
+                            </div>
+                            <%}
+                        }%>
                     </div>
                     <div class="card-footer">
                         <i class="fas fa-plus-circle testimonial-plus"></i>
@@ -472,6 +503,15 @@
 
 <script>
     $(document).ready(function () {
+        $('.pricef').change(function(){
+            dtype =$('#dtype').val();
+            if(dtype == 'Absolute'){
+                $('#fprice').val($('#aprice').val() - $('#dprice').val())
+            }
+            else if(dtype == 'Percentage'){
+                $('#fprice').val($('#aprice').val() - ($('#aprice').val()*$('#dprice').val()/100))    
+            }
+        })
         $('.testimonial-plus').click(function(){
             copytest = $('#testimonial-body').clone();
             copytest.removeAttr('id')
@@ -524,7 +564,7 @@
                     xhrFields: {
                         withCredentials: true
                     },
-                    data: $('#createproductform').serialize()+"&testinomials="+testi+"&dimension="+dimen,
+                    data: $('#createproductform').serialize()+"&testimonials="+testi+"&dimension="+dimen,
                     success: function (data) {
                         console.log(data);
                         $('input,select').css('border-color', '');

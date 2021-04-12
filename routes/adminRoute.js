@@ -56,8 +56,11 @@ adminRoute.get('/addproduct', adminControl.addProductForm);
 adminRoute.post('/addnewproduct', adminControl.addNewProduct);
 // adminRoute.post('/verifyemail', adminControl.verifyemail);
 adminRoute.get('/viewproduct', adminControl.viewProduct);
-// adminRoute.post('/deleteproduct', adminControl.deleteProduct);
-adminRoute.post('/editproduct', adminControl.editProduct);
+adminRoute.post('/deleteproduct', adminControl.deleteProduct);
+
+adminRoute.post('/soldproduct', adminControl.soldProduct);
+adminRoute.post('/unsoldproduct', adminControl.unsoldProduct);
+
 // adminRoute.post('/updateproduct', adminControl.updateProduct);
 // adminRoute.post('/showprofile', adminControl.showProfile);
 // adminRoute.post('/changepassword', adminControl.changePassword);

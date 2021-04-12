@@ -28,7 +28,8 @@ const product_master = connection.define('product_masters', {
     'dimension': { type: Sequelize.STRING(256) },
     'color': { type: Sequelize.STRING },
     'quality': { type: Sequelize.STRING(99), defaultValue: 'Best' },
-    
+    'sold': { type: Sequelize.BOOLEAN, defaultValue: false },
+
     'ribbon': { type: Sequelize.STRING },
     'sash': { type: Sequelize.STRING },
     'duration': { type: Sequelize.STRING },

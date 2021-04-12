@@ -1,6 +1,6 @@
 {
     "dialect": "mysql",
-    "database": "desikmny_dplife",
+    "database": "desikmny_dplife_dev",
     "username": "desikmny_root",
     "password": "Mostwanted@24",
     "host": "localhost",

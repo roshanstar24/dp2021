@@ -494,7 +494,7 @@ exports.addNewProduct = (req, res) => {
     req.body["published_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email;
     console.log(req.body.tags)
     console.log(req.body.related)
-    if (req.body.tags) req.body.tags = req.body.tags.join(',');
+    if (req.body.tags) req.body.tags = Array.isArray(req.body.tags) ? req.body.tags.join(',') : req.body.tags;
     if (req.body.related) req.body.related = req.body.related.join(',');
     if (adminModel.storeProduct(req.body)) {
         res.send({ status: true, 'message': '  Product Added.' });
@@ -548,7 +548,40 @@ exports.editProduct = (req, res) => {
     })
 }
 
+exports.deleteProduct = (req, res) => {
+    req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email
+    adminModel.deleteProduct(req.body).then(() => {
+        res.send({ status: true, 'message': '  Product Deleted.' });
+    }).catch((err) => {
+        console.log('-------------------------------------------------------')
+        console.log(err.parent.sqlMessage)
+        console.log('-------------------------------------------------------')
+        res.send({ status: false, 'message': err.parent.sqlMessage });
+    })
+}
 
+exports.soldProduct = (req, res) => {
+    req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email
+    adminModel.soldProduct(req.body).then(() => {
+        res.send({ status: true, 'message': '  Product Sold.' });
+    }).catch((err) => {
+        console.log('-------------------------------------------------------')
+        console.log(err.parent.sqlMessage)
+        console.log('-------------------------------------------------------')
+        res.send({ status: false, 'message': err.parent.sqlMessage });
+    })
+}
+exports.unsoldProduct = (req, res) => {
+    req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email
+    adminModel.unsoldProduct(req.body).then(() => {
+        res.send({ status: true, 'message': '  Product UnSold.' });
+    }).catch((err) => {
+        console.log('-------------------------------------------------------')
+        console.log(err.parent.sqlMessage)
+        console.log('-------------------------------------------------------')
+        res.send({ status: false, 'message': err.parent.sqlMessage });
+    })
+}
 exports.logout = (req, res) => {
     req.session.destroy()
     res.render('admin/login')

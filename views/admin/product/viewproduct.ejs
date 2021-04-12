@@ -39,15 +39,23 @@
 </style>
 
 <div class="row">
-    <%product.forEach(prod=>{%>
+    <%product.forEach(prod=>{
+        if(prod.enabled==1){%>
         <%
-        let pthumbnail = idtosrc[prod.primary_img]["thumbnail"];
-        let coverthumbnail = idtosrc[prod.secondary_img2]["thumbnail"];
+        let pthumbnail = idtosrc[prod.primary_img] ? idtosrc[prod.primary_img]["thumbnail"] : '';
+        let coverthumbnail = idtosrc[prod.secondary_img2] ? idtosrc[prod.secondary_img2]["thumbnail"] : '';
         %>
-        <div class="col-md-4 card card-primary card-outline">
+        <div class="col-md-4 card card-primary card-outline">            
             <div class="card-header">
                 <div class="card card-widget widget-user shadow-lg">
                 <div class="widget-user-header text-white">
+                    <%if(prod.sold==1){%>
+                    <div class="ribbon-wrapper ribbon-lg" style="left: -2px; transform: rotate(-90deg); top: -2px;">
+                        <div class="ribbon bg-success text-lg" >
+                          Sold
+                        </div>
+                    </div>
+                    <%}%>
                     <img class="coverimg" src="<%=coverthumbnail%>">
                     <h3 aria-label="Product Name" data-balloon-pos="bottom-left" class="widget-user-username text-right"><%=prod.name%></h3>
                     <h5 aria-label="Art and Artist" data-balloon-pos="bottom-left"class="widget-user-desc text-right"><%=prod.art_form+" | "+ prod.artist%></h5>
@@ -94,25 +102,25 @@
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a aria-label="Primary Category" data-balloon-pos="bottom-left"  href="#" class="nav-link">
-                                <%=prod.primary_category%> 
+                                <%=prod.primary_category=='' ? 'Primary Category' : prod.primary_category%> 
                             <span aria-label="Duration" data-balloon-pos="bottom-left" class="float-right badge bg-primary">Duration <%=prod.duration%></span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a aria-label="Secondary Category" data-balloon-pos="bottom-left" href="#" class="nav-link">
-                                <%=prod.secondary_category%> 
+                                <%=prod.secondary_category=='' ? 'Secondary Category' : prod.secondary_category%> 
                             <span aria-label="Year" data-balloon-pos="bottom-left"  class="float-right badge bg-info">Year <%=prod.year%></span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a aria-label="" data-balloon-pos="bottom-left" href="#" class="nav-link">
-                                <%=prod.tertiary_category%>  
+                            <a aria-label="Tertiary Category" data-balloon-pos="bottom-left" href="#" class="nav-link">
+                                <%=prod.tertiary_category== '' ? 'Tertiary Category' : prod.tertiary_category%>  
                                 <span  aria-label="<%=prod.productdate%>" data-balloon-pos="bottom-right" class="float-right badge bg-success">Product Date</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a aria-label="Quadternary Category" data-balloon-pos="bottom-left" href="#" class="nav-link">
-                                <%=prod.quaternary_category%>
+                                <%=prod.quaternary_category=='' ? 'Quadternary Category' : prod.quaternary_category%>
                                  <span aria-label="Number of Attendees" data-balloon-pos="bottom-left"  class="float-right badge bg-danger">Attendee <%=prod.number_of_attendees%></span>
                             </a>
                         </li>
@@ -122,17 +130,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a aria-label="Snippet (One Liner)" data-balloon-pos="bottom-right"  href="#" class="nav-link">
+                            <a aria-label="Tags" data-balloon-pos="bottom-right"  href="#" class="nav-link">
                                 <%=prod.tags%>
                             </a>
                         </li>
+                        
                         <li class="nav-item">
-                            <a aria-label="Snippet (One Liner)" data-balloon-pos="bottom-right"  href="#" class="nav-link">
-                                <%=prod.related%>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a aria-label="Snippet (One Liner)" data-balloon-pos="bottom-right"  href="#" class="nav-link">
+                            <a aria-label="Collaborated Artists" data-balloon-pos="bottom-right"  href="#" class="nav-link">
                                 <%=prod.collaborated_artist%>
                             </a>
                         </li>
@@ -150,11 +154,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <div class="input-group">
-                                <input type="text" disabled value="<%=prod.id%>" name="id" class="form-control">
-                                <span class="input-group-append">
-                                <button type="submit" class="btn btn-primary">Edit</button>
-                                </span>
+                            <div class="btn-group col-sm-12" style="padding:0">
+                                <button type="button" dataid="<%=prod.id%>" class="btn btn-info editproductbtn">Edit</button>
+                                <button type="button" dataid="<%=prod.id%>" class="btn btn-danger hideproductbtn">Delete</button>
+                                <%if(prod.sold==0){%>
+                                <button type="button" dataid="<%=prod.id%>" class="btn btn-success soldbtn">Sold</button>
+                                <%}else{%>
+                                <button type="button" dataid="<%=prod.id%>" class="btn btn-success unsoldbtn">UnSold</button>
+                                <%}%>
                             </div>
                         </li>
                     </ul>
@@ -163,7 +170,97 @@
                 <!-- /.widget-user -->
             </div>
         </div>    
-    <%})%>
+        <%}
+    })%>
     
     
  </div>
+ <script>
+    $(document).ready(function(){
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+        })
+        $('.editproductbtn').click(function(){
+            idd= $(this).attr('dataid') 
+            $.ajax({
+                 url:'/admin/editproduct',
+                 data : "id="+idd,
+                 type : "post",
+                 xhrFields: {
+                    withCredentials: true
+                },
+                success:function(data){
+                    $('#contentholder').html(data)
+                }
+             })
+        })
+        $('.hideproductbtn').click(function () {
+            var this_ = $(this);
+            Toast.fire({
+                position: 'top-end',
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes!',
+                cancelButtonText: 'No, Don\'t Delete!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/admin/deleteproduct',
+                        method: 'post',
+                        data: "id=" + $(this).attr('dataid'),
+                        success: function (data) {
+                            console.log(data);
+                            if(data.status){
+                                this_.parents('.card-primary').remove();
+                            }
+                            Toast.fire({
+                                'text': data.message,
+                                'timer': 5000
+                            })
+                        }
+                    })
+
+                }
+            })
+
+        })
+        $('.soldbtn').click(function () {
+            $.ajax({
+                url: '/admin/soldproduct',
+                method: 'post',
+                data: "id=" + $(this).attr('dataid'),
+                success: function (data) {
+                    console.log(data);
+                    Toast.fire({
+                        title: 'Sold',
+                        text: data.msg,
+                        icon: 'success',
+                        'timer': 5000
+                    }
+                    )
+                }
+            })
+        });
+        $('.unsoldbtn').click(function () {
+            $.ajax({
+                url: '/admin/unsoldproduct',
+                method: 'post',
+                data: "id=" + $(this).attr('dataid'),
+                success: function (data) {
+                    console.log(data);
+                    Toast.fire({
+                        title: 'UnSold',
+                        text: data.msg,
+                        icon: 'success',
+                        'timer': 5000
+                    })
+                }
+            })
+        })
+    })
+ </script>

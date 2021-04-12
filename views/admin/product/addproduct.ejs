@@ -206,18 +206,6 @@
                                     <%} })%>
                             </select>
                         </div>
-                        <div class="input-group-prepend mb-3">
-                            <div class="input-group-text"><i class="fas fa-link"></i></div>
-                            <select class="select2" multiple="multiple" data-placeholder="Select Realted Products"
-                                style="width: 100%;" name="related" id="related">
-                                <% tags.forEach((tag)=>{
-                                    if(tag["enabled"] == 1){%>
-                                    <option value="<%=tag["name"] %>"><%=tag["name"] %>
-                                    </option>
-                                    <%} })%>
-                            </select>
-                        </div>
-
                     </div>
                     <div class="card-footer">
                         <div class="input-group mb-3" aria-label="Location & Sponser" data-balloon-pos="up-left">
@@ -245,22 +233,22 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
                             </div>
-                            <input name="price" type="text" class="form-control" placeholder="Price">
+                            <input name="price" type="number" class="form-control pricef" id="aprice" placeholder="Price" value="0.0">
                         </div>
                         <div class="input-group mb-3" aria-label="Discount type" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fab fa-typo3"></i></span>
                             </div>
-                            <select class="custom-select select2" name="discount_type">
+                            <select class="custom-select select2 pricef" name="discount_type" id="dtype">
                                 <option value="Absolute">Absolute</option>
-                                <option value="Percent">Percentage</option>
+                                <option value="Percentage">Percentage</option>
                             </select>
                         </div>
                         <div class="input-group mb-3" aria-label="Discount Value" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-piggy-bank"></i></span>
                             </div>
-                            <input name="discount_value" type="text" class="form-control" placeholder="Discount Value">
+                            <input name="discount_value" type="number" class="form-control pricef" id="dprice" placeholder="Discount Value" value="0.0">
                         </div>
                     </div>
                     <div class="card-footer">
@@ -275,7 +263,7 @@
                                 <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
                             </div>
                             <input name="finalprice" class="form-control is-valid" type="text" readonly placeholder="Final Price"
-                                value="0.00">
+                                value="0.00" id="fprice">
                         </div>
                     </div>
                 </div>
@@ -295,8 +283,8 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-stopwatch-20"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Number of Attendees"
-                                name="number_of_attendees">
+                            <input type="number" class="form-control" placeholder="Number of Attendees"
+                                name="number_of_attendees" value="0">
                         </div>
                         <div class="input-group mb-3" aria-label="Year" data-balloon-pos="up-left">
                             <div class="input-group-prepend">
@@ -350,6 +338,7 @@
 
         </div>
         <div class="row">
+            <div class="col-md-12">
             <div class="card card-info">
                 <div class="card-header">
                     <h5 class="card-title">Product Picture
@@ -362,20 +351,21 @@
                             <div class="card card-primary">
                                 <div class="card-header">
                                     <h5 class="card-title">Primary | Secondary Image</h5>
+                                    <i class="fas fa-snowflake float-right txtfreeze"></i>
                                 </div>
                                 <div class="card-body">
                                     <div class="input-group mb-3" aria-label="Primary Image" data-balloon-pos="up-left">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="far fa-image"></i></span>
                                         </div>
-                                        <input name="primary_img" type="text" class="form-control" placeholder="Primary Image" id="priimg">
+                                        <input readonly  name="primary_img" type="text" class="form-control" placeholder="Primary Image" id="priimg">
                                     </div>
                                     <div class="input-group mb-3" aria-label="Secondary Image 1"
                                         data-balloon-pos="up-left">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-file-image"></i></span>
                                         </div>
-                                        <input name="secondary_img1" type="text" class="form-control" placeholder="Secondary Image 1"
+                                        <input readonly name="secondary_img1" type="text" class="form-control" placeholder="Secondary Image 1"
                                             id="secimg1">
                                     </div>
                                     <div class="input-group mb-3" aria-label="Secondary Image 2"
@@ -383,7 +373,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-file-image"></i></span>
                                         </div>
-                                        <input name="secondary_img2" type="text" class="form-control" placeholder="Secondary Image 2"
+                                        <input readonly name="secondary_img2" type="text" class="form-control" placeholder="Secondary Image 2"
                                             id="secimg2">
                                     </div>
                                 </div>
@@ -399,7 +389,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="far fa-images"></i></span>
                                         </div>
-                                        <textarea name="gallery_img" placeholder="Gallery Image" id="galimg" style="width: calc(100% - 50px);"></textarea>
+                                        <textarea readonly name="gallery_img" placeholder="Gallery Image" id="galimg" style="width: calc(100% - 50px);"></textarea>
                                         <!-- <input type="text" class="form-control" placeholder="Gallery Image" id="galimg"> -->
                                     </div>
                                 </div>
@@ -426,6 +416,7 @@
                             <%})%>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
         <div class="row">
@@ -464,6 +455,15 @@
 
 <script>
     $(document).ready(function () {
+        $('.pricef').change(function(){
+            dtype =$('#dtype').val();
+            if(dtype == 'Absolute'){
+                $('#fprice').val($('#aprice').val() - $('#dprice').val())
+            }
+            else if(dtype == 'Percentage'){
+                $('#fprice').val($('#aprice').val() - ($('#aprice').val()*$('#dprice').val()/100))    
+            }
+        })
         $('.testimonial-plus').click(function(){
             copytest = $('#testimonial-body').clone();
             copytest.removeAttr('id')

@@ -171,3 +171,15 @@ exports.getOneProduct = (data) => {
 exports.getProduct = () => {
     return product.findAll({ raw: true },{ order: [['createdAt', 'DESC']] });
 }
+
+exports.deleteProduct = (data) => {
+    return product.update({ "enabled": 0, "last_modified_by": data.last_modified_by }, { "where": { id: data.id } })
+}
+
+exports.soldProduct = (data) => {
+    return product.update({ "sold": 1, "last_modified_by": data.last_modified_by }, { "where": { id: data.id } })
+}
+
+exports.unsoldProduct = (data) => {
+    return product.update({ "sold": 0, "last_modified_by": data.last_modified_by }, { "where": { id: data.id } })
+}
