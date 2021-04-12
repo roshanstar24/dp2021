@@ -4,7 +4,7 @@ const express = require('express');
 const fs = require('fs')
 const path = require('path')
 const app = express();
-const imageThumbnail = require('image-thumbnail');
+const imageThumbnail = require('node-thumbnail').thumb;
 const { REPL_MODE_SLOPPY } = require('repl');
 const { render } = require('../routes/adminRoute');
 
@@ -247,6 +247,7 @@ exports.uploadProfilePhoto = (req, res) => {
     var ext = req.files.uploadphoto.name.substr(req.files.uploadphoto.name.lastIndexOf('.') + 1);
     var __relativepath = path.join('/', 'assets', 'uploads', 'profile', (req.session.loginuser.id + '.' + ext))
     uploadPath = path.join(__basedir, __relativepath);
+    thumbpath = path.join(__basedir, path.join('/', 'assets', 'uploads', 'profile'))
     console.log(uploadPath)
     // Use the mv() method to place the file somewhere on your server
     sampleFile.mv(uploadPath, function (err) {
@@ -255,9 +256,18 @@ exports.uploadProfilePhoto = (req, res) => {
         }
         else {
             try {
-                imageThumbnail(uploadPath).then((thumbnail) => {
-                    fs.writeFileSync(uploadPath + "_thumbnail.jpeg", thumbnail)
-                });
+                imageThumbnail({
+                    source: uploadPath,
+                    destination: thumbpath,
+                    concurrency: 2,
+                    width : 250,
+                    suffix :'_thumbnail',
+                    basename : req.session.loginuser.id + '.' + ext
+                  }, function(files, err, stdout, stderr) {
+                    // console.log(files);
+                  });
+                // imageThumbnail(uploadPath,uploadPath + "_thumbnail.jpeg", '300x?').then(() => console.log('done!'))
+                // .catch(err => console.error(err))
 
             } catch (err) {
                 console.error(err);
@@ -447,7 +457,8 @@ exports.uploadProductIMG = (req, res) => {
     milisecond = new Date().getTime()
     var ext = sampleFile.name.substr(sampleFile.name.lastIndexOf('.') + 1);
     var __relativepath = path.join('\\', 'assets', 'uploads', 'product', sampleFile.name + milisecond + "." + ext)
-    var __thumbnailpath = path.join('\\', 'assets', 'uploads', 'product', 'thumbnails', sampleFile.name + milisecond + "." + ext)
+    var __thumbnailpath =  path.join('\\', 'assets', 'uploads', 'product', 'thumbnails');
+    var thumbnailpathfile = path.join('\\', 'assets', 'uploads', 'product', 'thumbnails', sampleFile.name + milisecond + "." + ext)
     uploadPath = path.join(__basedir, __relativepath);
     thumbnailpath = path.join(__basedir, __thumbnailpath);
     console.log(uploadPath)
@@ -458,9 +469,17 @@ exports.uploadProductIMG = (req, res) => {
         }
         else {
             try {
-                imageThumbnail(uploadPath).then((thumbnail) => {
-                    fs.writeFileSync(thumbnailpath, thumbnail)
-                });
+                imageThumbnail({
+                    source: uploadPath,
+                    destination: thumbnailpath,
+                    concurrency: 2,
+                    width : 250,
+                    suffix :''
+                  }, function(files, err, stdout, stderr) {
+                    console.log(files);
+                  });
+                // imageThumbnail(uploadPath,thumbnailpath,'300x?').then(() => console.log('done!'))
+                // .catch(err => console.error(err))
 
             } catch (err) {
                 console.error(err);
@@ -468,7 +487,7 @@ exports.uploadProductIMG = (req, res) => {
             adminModel.storeImage({
                 name: sampleFile.name + milisecond + "." + ext,
                 imagepath: __relativepath,
-                thumbnailpath: __thumbnailpath
+                thumbnailpath: thumbnailpathfile
             }).then((data) => {
                 res.send({ status: true, message: "Product Image Uploaded !" });
             })
