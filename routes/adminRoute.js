@@ -57,7 +57,7 @@ adminRoute.post('/addnewproduct', adminControl.addNewProduct);
 // adminRoute.post('/verifyemail', adminControl.verifyemail);
 adminRoute.get('/viewproduct', adminControl.viewProduct);
 adminRoute.post('/deleteproduct', adminControl.deleteProduct);
-
+adminRoute.post('/editproduct', adminControl.editProduct);
 adminRoute.post('/soldproduct', adminControl.soldProduct);
 adminRoute.post('/unsoldproduct', adminControl.unsoldProduct);
 
