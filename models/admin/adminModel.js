@@ -183,3 +183,8 @@ exports.soldProduct = (data) => {
 exports.unsoldProduct = (data) => {
     return product.update({ "sold": 0, "last_modified_by": data.last_modified_by }, { "where": { id: data.id } })
 }
+
+exports.updateProduct = (data) => {
+    console.log(data)
+    return product.update(data, { where: { id: data.id } })
+}

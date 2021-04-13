@@ -561,6 +561,18 @@ exports.editProduct = (req, res) => {
     })
 }
 
+exports.updateProduct = (req, res) => {
+    req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email
+    adminModel.updateProduct(req.body).then((data) => {
+        res.send({ status: true, 'message': "Product Updated Successfully" });
+    }).catch((err) => {
+        console.log('-------------------------------------------------------')
+        console.log(err.parent.sqlMessage)
+        console.log('-------------------------------------------------------')
+        res.send({ status: false, 'message': err.parent.sqlMessage });
+    })
+}
+
 exports.deleteProduct = (req, res) => {
     req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email
     adminModel.deleteProduct(req.body).then(() => {

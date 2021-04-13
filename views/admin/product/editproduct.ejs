@@ -57,7 +57,8 @@
 </div>
 <!-- /.content-header -->
 <div class="container-fluid">
-    <form action="/admin/addnewproduct" method="POST" id="createproductform">
+    <form action="/admin/updateproduct" method="POST" id="createproductform">
+        <input name="id" type="hidden" value="<%=product.id%>">
         <div class="row">
             <div class="col-md-12">
                 <div class=" card card-info">
@@ -364,80 +365,82 @@
 
         </div>
         <div class="row">
-            <div class="card card-info">
-                <div class="card-header">
-                    <h5 class="card-title">Product Picture
-                    </h5>
-                    <i class="fas fa-chevron-circle-down float-right" id="img-down"></i>
-                </div>
-                <div class="card-body" id="img-down-card">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card card-primary">
-                                <div class="card-header">
-                                    <h5 class="card-title">Primary | Secondary Image</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="input-group mb-3" aria-label="Primary Image" data-balloon-pos="up-left">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="far fa-image"></i></span>
-                                        </div>
-                                        <input name="primary_img" value="<%=product.primary_img%>"type="text" class="form-control" placeholder="Primary Image" id="priimg">
-                                    </div>
-                                    <div class="input-group mb-3" aria-label="Secondary Image 1"
-                                        data-balloon-pos="up-left">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-file-image"></i></span>
-                                        </div>
-                                        <input name="secondary_img1" value="<%=product.secondary_img1%>" type="text" class="form-control" placeholder="Secondary Image 1"
-                                            id="secimg1">
-                                    </div>
-                                    <div class="input-group mb-3" aria-label="Secondary Image 2"
-                                        data-balloon-pos="up-left">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-file-image"></i></span>
-                                        </div>
-                                        <input name="secondary_img2" value="<%=product.secondary_img2%>" type="text" class="form-control" placeholder="Secondary Image 2"
-                                            id="secimg2">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-success">
-                                <div class="card-header">
-                                    <h5 class="card-title">Gallery Images</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="input-group mb-3" aria-label="Gallery Image" data-balloon-pos="up-left">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="far fa-images"></i></span>
-                                        </div>
-                                        <textarea name="gallery_img" placeholder="Gallery Image" id="galimg" style="width: calc(100% - 50px);"><%=product.gallery_img%></textarea>
-                                        <!-- <input type="text" class="form-control" placeholder="Gallery Image" id="galimg"> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+            <div class="col-md-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h5 class="card-title">Product Picture
+                        </h5>
+                        <i class="fas fa-chevron-circle-down float-right" id="img-down"></i>
                     </div>
-                    <div class="row">
-                        <%images.forEach((image)=>{%>
-                            <div class="col-sm-2 prodimg" imageid="<%=image["id"]%>">
-                                <button type="button" class="btn imgsel pri btn-outline-success btn-sm">Primary</button>
-                                <button type="button" class="btn imgsel sec1 btn-outline-success btn-sm">Secondary
-                                    1</button>
-                                <button type="button" class="btn imgsel sec2 btn-outline-success btn-sm">Secondary
-                                    2</button>
-                                <button type="button" class="btn imgsel gal btn-outline-success btn-sm">Gallery</button>
-                                <div class="imgid"><%=image["id"]%></div>
-                                <a href="<%=image["imagepath"]%>" data-toggle="lightboxs" data-title="
-                                    <%=image["name"]%>"
-                                        data-gallery="gallery" title="<%=image["name"]%>">
-                                            <img src="<%=image["thumbnailpath"]%>" class="img-fluid mb-2">
-                                </a>
+                    <div class="card-body" id="img-down-card">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Primary | Secondary Image</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group mb-3" aria-label="Primary Image" data-balloon-pos="up-left">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-image"></i></span>
+                                            </div>
+                                            <input name="primary_img" value="<%=product.primary_img%>"type="text" class="form-control" placeholder="Primary Image" id="priimg">
+                                        </div>
+                                        <div class="input-group mb-3" aria-label="Secondary Image 1"
+                                            data-balloon-pos="up-left">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-file-image"></i></span>
+                                            </div>
+                                            <input name="secondary_img1" value="<%=product.secondary_img1%>" type="text" class="form-control" placeholder="Secondary Image 1"
+                                                id="secimg1">
+                                        </div>
+                                        <div class="input-group mb-3" aria-label="Secondary Image 2"
+                                            data-balloon-pos="up-left">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-file-image"></i></span>
+                                            </div>
+                                            <input name="secondary_img2" value="<%=product.secondary_img2%>" type="text" class="form-control" placeholder="Secondary Image 2"
+                                                id="secimg2">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <%})%>
+                            <div class="col-md-6">
+                                <div class="card card-success">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Gallery Images</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group mb-3" aria-label="Gallery Image" data-balloon-pos="up-left">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-images"></i></span>
+                                            </div>
+                                            <textarea name="gallery_img" placeholder="Gallery Image" id="galimg" style="width: calc(100% - 50px);"><%=product.gallery_img%></textarea>
+                                            <!-- <input type="text" class="form-control" placeholder="Gallery Image" id="galimg"> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <%images.forEach((image)=>{%>
+                                <div class="col-sm-2 prodimg" imageid="<%=image["id"]%>">
+                                    <button type="button" class="btn imgsel pri btn-outline-success btn-sm">Primary</button>
+                                    <button type="button" class="btn imgsel sec1 btn-outline-success btn-sm">Secondary
+                                        1</button>
+                                    <button type="button" class="btn imgsel sec2 btn-outline-success btn-sm">Secondary
+                                        2</button>
+                                    <button type="button" class="btn imgsel gal btn-outline-success btn-sm">Gallery</button>
+                                    <div class="imgid"><%=image["id"]%></div>
+                                    <a href="<%=image["imagepath"]%>" data-toggle="lightboxs" data-title="
+                                        <%=image["name"]%>"
+                                            data-gallery="gallery" title="<%=image["name"]%>">
+                                                <img src="<%=image["thumbnailpath"]%>" class="img-fluid mb-2">
+                                    </a>
+                                </div>
+                                <%})%>
+                        </div>
                     </div>
                 </div>
             </div>
