@@ -265,18 +265,6 @@ exports.uploadProfilePhoto = (req, res) => {
                     .catch(err => {
                         console.log(err)
                     });
-                // imageThumbnail({
-                //     source: uploadPath,
-                //     destination: thumbpath,
-                //     concurrency: 2,
-                //     width : 250,
-                //     suffix :'_thumbnail',
-                //     basename : req.session.loginuser.id + '.' + ext
-                //   }, function(files, err, stdout, stderr) {
-                //     // console.log(files);
-                //   });
-                // imageThumbnail(uploadPath,uploadPath + "_thumbnail.jpeg", '300x?').then(() => console.log('done!'))
-                // .catch(err => console.error(err))
 
             } catch (err) {
                 console.error(err);
@@ -465,9 +453,9 @@ exports.uploadProductIMG = (req, res) => {
     sampleFile = req.files.productimg;
     milisecond = new Date().getTime()
     var ext = sampleFile.name.substr(sampleFile.name.lastIndexOf('.') + 1);
-    var __relativepath = path.join('\\', 'assets', 'uploads', 'product', sampleFile.name + milisecond + "." + ext)
-    var __thumbnailpath =  path.join('\\', 'assets', 'uploads', 'product', 'thumbnails');
-    var thumbnailpathfile = path.join('\\', 'assets', 'uploads', 'product', 'thumbnails', sampleFile.name + milisecond + "." + ext)
+    var __relativepath = path.join('/', 'assets', 'uploads', 'product', sampleFile.name + milisecond + "." + ext)
+    var __thumbnailpath =  path.join('/', 'assets', 'uploads', 'product', 'thumbnails');
+    var thumbnailpathfile = path.join('/', 'assets', 'uploads', 'product', 'thumbnails', sampleFile.name + milisecond + "." + ext)
     uploadPath = path.join(__basedir, __relativepath);
     thumbnailpath = path.join(__basedir, thumbnailpathfile);
     console.log(uploadPath)
@@ -487,25 +475,6 @@ exports.uploadProductIMG = (req, res) => {
                     .catch(err => {
                         console.log(err)
                     });
-                // imageThumbnail(uploadPath)
-                //     .resize('250', '180', '^')
-                //     .gravity('center')
-                //     .extent(250, 180)
-                //     .write(thumbnailpathfile, function (error) {
-                //     if(error) console.log(error);
-                // });
-                // imageThumbnail({
-                //     source: uploadPath,
-                //     destination: thumbnailpath,
-                //     concurrency: 2,
-                //     width : 250,
-                //     suffix :''
-                //   }, function(files, err, stdout, stderr) {
-                //     console.log(files);
-                //   });
-                // imageThumbnail(uploadPath,thumbnailpath,'300x?').then(() => console.log('done!'))
-                // .catch(err => console.error(err))
-
             } catch (err) {
                 console.error(err);
             }
