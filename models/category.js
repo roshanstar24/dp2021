@@ -18,7 +18,7 @@ const category_master = connection.define('category_master', {
 
 
 category_master.sync({
-    force: true
+//    force: true
 }).then(() => {
     category_master.create({
         'name': 'Product',
