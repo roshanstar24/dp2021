@@ -4,7 +4,7 @@ const express = require('express');
 const fs = require('fs')
 const path = require('path')
 const app = express();
-const imageThumbnail = require('node-thumbnail').thumb;
+const imageThumbnail = require('jimp');
 const { REPL_MODE_SLOPPY } = require('repl');
 const { render } = require('../routes/adminRoute');
 
@@ -256,16 +256,25 @@ exports.uploadProfilePhoto = (req, res) => {
         }
         else {
             try {
-                imageThumbnail({
-                    source: uploadPath,
-                    destination: thumbpath,
-                    concurrency: 2,
-                    width : 250,
-                    suffix :'_thumbnail',
-                    basename : req.session.loginuser.id + '.' + ext
-                  }, function(files, err, stdout, stderr) {
-                    // console.log(files);
-                  });
+                imageThumbnail.read(uploadPath)
+                    .then(image => {
+                        image.resize(256,256)
+                        .quality(60)
+                        .write(uploadPath + "_thumbnail.jpeg")
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    });
+                // imageThumbnail({
+                //     source: uploadPath,
+                //     destination: thumbpath,
+                //     concurrency: 2,
+                //     width : 250,
+                //     suffix :'_thumbnail',
+                //     basename : req.session.loginuser.id + '.' + ext
+                //   }, function(files, err, stdout, stderr) {
+                //     // console.log(files);
+                //   });
                 // imageThumbnail(uploadPath,uploadPath + "_thumbnail.jpeg", '300x?').then(() => console.log('done!'))
                 // .catch(err => console.error(err))
 
@@ -460,7 +469,7 @@ exports.uploadProductIMG = (req, res) => {
     var __thumbnailpath =  path.join('\\', 'assets', 'uploads', 'product', 'thumbnails');
     var thumbnailpathfile = path.join('\\', 'assets', 'uploads', 'product', 'thumbnails', sampleFile.name + milisecond + "." + ext)
     uploadPath = path.join(__basedir, __relativepath);
-    thumbnailpath = path.join(__basedir, __thumbnailpath);
+    thumbnailpath = path.join(__basedir, thumbnailpathfile);
     console.log(uploadPath)
     // Use the mv() method to place the file somewhere on your server
     sampleFile.mv(uploadPath, function (err) {
@@ -469,15 +478,31 @@ exports.uploadProductIMG = (req, res) => {
         }
         else {
             try {
-                imageThumbnail({
-                    source: uploadPath,
-                    destination: thumbnailpath,
-                    concurrency: 2,
-                    width : 250,
-                    suffix :''
-                  }, function(files, err, stdout, stderr) {
-                    console.log(files);
-                  });
+                imageThumbnail.read(uploadPath)
+                    .then(image => {
+                        image.resize(256,256)
+                        .quality(60)
+                        .write(thumbnailpath)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    });
+                // imageThumbnail(uploadPath)
+                //     .resize('250', '180', '^')
+                //     .gravity('center')
+                //     .extent(250, 180)
+                //     .write(thumbnailpathfile, function (error) {
+                //     if(error) console.log(error);
+                // });
+                // imageThumbnail({
+                //     source: uploadPath,
+                //     destination: thumbnailpath,
+                //     concurrency: 2,
+                //     width : 250,
+                //     suffix :''
+                //   }, function(files, err, stdout, stderr) {
+                //     console.log(files);
+                //   });
                 // imageThumbnail(uploadPath,thumbnailpath,'300x?').then(() => console.log('done!'))
                 // .catch(err => console.error(err))
 
