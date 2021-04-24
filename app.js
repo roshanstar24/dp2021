@@ -7,6 +7,7 @@ const fileUpload = require('express-fileupload');
 const app = express();
 const bodyParser = require('body-parser');
 const adminRoute = require('./routes/adminRoute');
+const siteRoute = require('./routes/siteRoute');
 
 global.__basedir = __dirname;
 
@@ -29,9 +30,8 @@ app.use('/assets/uploads', express.static(path.join(__dirname, 'assets','uploads
 
 
 
-
-
 app.use('/admin', adminRoute);
+app.use('/', siteRoute);
 
 
 app.get('/', (req, res) => {

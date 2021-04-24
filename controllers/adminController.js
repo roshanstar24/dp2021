@@ -1,3 +1,4 @@
+const buzzdetails = require('../models/dpbuzz.js');
 const adminModel = require('../models/admin/adminModel');
 const adminQuery = require('../models/admin/adminQuery');
 const express = require('express');
@@ -14,7 +15,6 @@ app.use((req, res, next) => {
     // console.log(req.session.logged_in)
     if (req.session.logged_in) {
         req.body["last_modified_by"] = req.session.loginuser.name + "/" + req.session.loginuser.email;
-
     }
     // else {
     //     console.log("session not set");
@@ -63,7 +63,14 @@ exports.postLogin = (req, res) => {
                     dob: authresult.dob,
                     doj: authresult.doj,
                     id: authresult.id,
-                    picture: authresult.picture
+                    picture: authresult.picture,
+                    buzz: {
+                        name: buzzdetails.name,
+                        role: buzzdetails.phone1,
+                        email: buzzdetails.email1,
+                        logocircle: buzzdetails.logocircle,
+                        logo: buzzdetails.logo
+                    }
                 }
                 res.send({ status: "success", 'message': '  Login Successful', 'redirect': '/admin/dashboard' });
             }
@@ -365,8 +372,43 @@ exports.updateTag = (req, res) => {
 /* CATEGORY */
 
 exports.addCategoryForm = (req, res) => {
-    console.log(req.session)
-    res.render('admin/category/addcategory', { "user": req.session })
+    adminModel.getCategory().then((data) => {
+        renderdata["category"] = data;
+        renderdata["loginuser"] = req.session.loginuser
+        treedata={}
+        data.forEach(cat=>{
+            treedata[cat.id]={"text":cat.name,"type":cat.type,"sort":cat.sort,"nodes":[]}
+        })
+        data.forEach(cat=>{
+            if(cat.type!='primary'){
+                treedata[cat.parentcategory]["nodes"].push(cat.id)
+            }
+        })
+        console.log(treedata)
+        renderdata[treedata]= treedata
+        jstree=[]
+        // for( d in treedata){
+        //     if(treedata[d]["type"]=='primary'){
+        //         console.log(treedata[d]["text"])
+        //         treedata[d]["nodes"].forEach(m=>{
+        //             console.log(treedata[m]["text"])
+        //             treedata[m]["nodes"].forEach(n=>{
+        //                 console.log(treedata[n]["text"])
+        //                 treedata[n]["nodes"].forEach(o=>{
+        //                     console.log(treedata[o]["text"])
+                           
+        //                 })
+        //             })
+        //         })
+        //     }
+        // }
+        adminModel.getImage().then((data) => {
+            renderdata["images"] = data;
+            res.render('admin/category/addcategory', renderdata)
+        });
+        
+    })
+    
 }
 
 exports.addNewCategory = (req, res) => {
@@ -405,12 +447,43 @@ exports.editCategory = (req, res) => {
     adminModel.getOneCategory(req.body).then((data) => {
         renderdata["category"] = data;
         renderdata["loginuser"] = req.session.loginuser
-        res.render('admin/category/editcategory', renderdata)
-    }).catch((err) => {
-        console.log('-------------------------------------------------------')
-        console.log(err.parent.sqlMessage)
-        console.log('-------------------------------------------------------')
-        res.send({ status: false, 'message': err.parent.sqlMessage });
+        treedata={}
+        adminModel.getCategory(req.body).then((cdata) => {
+            console.log("=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+            console.log(cdata)
+            cdata.forEach(cat=>{
+                treedata[cat.id]={"text":cat.name,"type":cat.type,"sort":cat.sort,"nodes":[]}
+            })
+            cdata.forEach(cat=>{
+                if(cat.type!='primary'){
+                    treedata[cat.parentcategory]["nodes"].push(cat.id)
+                }
+            })
+            console.log(treedata)
+            renderdata[treedata]= treedata
+            jstree=[]
+            // for( d in treedata){
+            //     if(treedata[d]["type"]=='primary'){
+            //         console.log(treedata[d]["text"])
+            //         treedata[d]["nodes"].forEach(m=>{
+            //             console.log(treedata[m]["text"])
+            //             treedata[m]["nodes"].forEach(n=>{
+            //                 console.log(treedata[n]["text"])
+            //                 treedata[n]["nodes"].forEach(o=>{
+            //                     console.log(treedata[o]["text"])
+                               
+            //                 })
+            //             })
+            //         })
+            //     }
+            // }
+            adminModel.getImage().then((idata) => {
+                renderdata["images"] = idata;
+                res.render('admin/category/editcategory', renderdata)
+            });
+        })
+        
+        
     })
 }
 exports.updateCategory = (req, res) => {

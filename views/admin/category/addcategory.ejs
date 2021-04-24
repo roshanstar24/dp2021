@@ -1,4 +1,23 @@
 <link rel="stylesheet" href="/assets/admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<style>
+    ul.cattree > li {
+    color: red;
+}
+
+ul.cattree > li> ul >li{
+    color:blue
+}
+ul.cattree > li > ul> li >ul>li{
+    color:green
+}
+ul.cattree > li > ul> li >ul>li>ul>li{
+    color:orange
+}
+
+ul.cattree{
+    cursor : pointer;
+}
+</style>
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -15,17 +34,20 @@
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
+<%
+%>
 <!-- /.content-header -->
 <div class="container-fluid">
     <form action="/admin/addnewcategory" method="POST" id="createcategoryform">
         <div class="row">
-            <div class="col-md-6 card">
-                <div class="card-header">
-                    <h5 class="card-title">Category Details</h5>
+            <div class="col-md-6">                
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h5 class="card-title">Category Details</h5>
 
-                </div>
+                    </div>
 
-                <div class="card-body">
+                
                     <div class="card-body">
                         <div class="form-group row">
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
@@ -34,27 +56,170 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="role" class="col-sm-2 col-form-label">Type</label>
+                            <label for="name" class="col-sm-2 col-form-label">Sort Order</label>
                             <div class="col-sm-10">
-                                <select class="custom-select" name="type">
-                                    <%if(user !== null){
-                                    if(user.logged_in){
-                                        if(user.loginuser.role == "Admin"){
-                                            %><option value="primary">Primary</option><%
-                                        }
-                                    }
-                                }%>
-                                    <option value="secondary">Secondary - 2nd Level</option>
-                                    <option value="tertiary">Tertiary - 3rd Level</option>
-                                    <option value="quaternary">Quaternary - 4th Level</option>
-                                </select>
+                                <input type="number" value="99" class="form-control" id="order" placeholder="Sort Order" name="sort">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-2 col-form-label">Parent ID</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" placeholder="Parent Category id" name="parentcategory" type="text" readonly id="parentcatid" >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-2 col-form-label">Parent Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" placeholder="Parent Category Name" type="text" readonly id="parentcatname">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-2 col-form-label">Type</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" placeholder="Category Type" name="type" type="text" readonly id="cattype">
+                            </div>
+                        </div>                        
                     </div>
-
                 </div>
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h5 class="card-title">Category Infomration</h5>
+                    </div>
+                    <div class="card-body">
+                        
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-3 col-form-label">Heading</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" placeholder="Heading" name="heading" type="text" id="heading" >
+                            </div>
+                        </div>  
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                                <textarea name="description"  style="width: 100%"></textarea>
+                            </div>
+                        </div>                     
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">                
+                <div class="card card-warning">
+                    <div class="card-header">
+                        <h5 class="card-title">Category View</h5>
+                         <i class="fas fa-sync float-right sendajax" ahref="/admin/addcategory"></i>
+                    </div>
+                
+                    <div class="card-body">
+                        <ul class="cattree">
+                            <%
+                            for( d in treedata){
+                                if(treedata[d]["type"]=='primary'){
+                                    %><li class="selectcat" cattype="secondary" catid="<%=d%>" catname="<%=treedata[d]["text"]%>"><%=treedata[d]["text"]%>(<%=treedata[d]["sort"]%>)<ul><%
+                                    <!-- console.log(treedata[d]["text"]) -->
+                                    treedata[d]["nodes"].forEach(m=>{
+                                        %><li class="selectcat" cattype="tertiary" catid="<%=m%>" catname="<%=treedata[m]["text"]%>"><%=treedata[m]["text"]%>(<%=treedata[m]["sort"]%>)<ul><%
+                                        <!-- console.log(treedata[m]["text"]) -->
+                                        treedata[m]["nodes"].forEach(n=>{
+                                            %><li class="selectcat" cattype="quaternary" catid="<%=n%>" catname="<%=treedata[n]["text"]%>"><%=treedata[n]["text"]%>(<%=treedata[n]["sort"]%>)<ul><%
+                                            <!-- console.log(treedata[n]["text"]) -->
+                                            treedata[n]["nodes"].forEach(o=>{
+                                                %><li><%=treedata[o]["text"]%>(<%=treedata[o]["sort"]%>)</li><%
+                                                <!-- console.log(treedata[o]["text"]) -->
+                                               
+                                            })
+                                            %></ul></li><%
+                                        })
+                                        %></ul></li><%
+                                    })
+                                    %></ul></li><%
+                                }
+                            }
+                            %>  
+                        </ul>                   
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h5 class="card-title">Category Picture
+                    </h5>
+                    <i class="fas fa-chevron-circle-down float-right" id="img-down"></i>
+                </div>
+                <div class="card-body" id="img-down-card">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h5 class="card-title">Primary | Secondary Image</h5>
+                                    <i class="fas fa-snowflake float-right txtfreeze"></i>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group mb-3" aria-label="Primary Image" data-balloon-pos="up-left">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-image"></i></span>
+                                        </div>
+                                        <input readonly  name="primary_img" type="text" class="form-control" placeholder="Primary Image" id="priimg">
+                                    </div>
+                                    <div class="input-group mb-3" aria-label="Secondary Image 1"
+                                        data-balloon-pos="up-left">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-file-image"></i></span>
+                                        </div>
+                                        <input readonly name="secondary_img1" type="text" class="form-control" placeholder="Secondary Image 1"
+                                            id="secimg1">
+                                    </div>
+                                    <div class="input-group mb-3" aria-label="Secondary Image 2"
+                                        data-balloon-pos="up-left">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-file-image"></i></span>
+                                        </div>
+                                        <input readonly name="secondary_img2" type="text" class="form-control" placeholder="Secondary Image 2"
+                                            id="secimg2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h5 class="card-title">Gallery Images</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group mb-3" aria-label="Gallery Image" data-balloon-pos="up-left">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="far fa-images"></i></span>
+                                        </div>
+                                        <textarea readonly name="gallery_img" placeholder="Gallery Image" id="galimg" style="width: calc(100% - 50px);"></textarea>
+                                        <!-- <input type="text" class="form-control" placeholder="Gallery Image" id="galimg"> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-
+                    </div>
+                    <div class="row">
+                        <%images.forEach((image)=>{%>
+                            <div class="col-sm-2 prodimg" imageid="<%=image["id"]%>">
+                                <button type="button" class="btn imgsel pri btn-outline-success btn-sm">Primary</button>
+                                <button type="button" class="btn imgsel sec1 btn-outline-success btn-sm">Secondary
+                                    1</button>
+                                <button type="button" class="btn imgsel sec2 btn-outline-success btn-sm">Secondary
+                                    2</button>
+                                <button type="button" class="btn imgsel gal btn-outline-success btn-sm">Gallery</button>
+                                <div class="imgid"><%=image["id"]%></div>
+                                <a href="<%=image["imagepath"]%>" data-toggle="lightboxs" data-title="
+                                    <%=image["name"]%>"
+                                        data-gallery="gallery" title="<%=image["name"]%>">
+                                            <img src="<%=image["thumbnailpath"]%>" class="img-fluid mb-2">
+                                </a>
+                            </div>
+                            <%})%>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </form>
@@ -63,6 +228,32 @@
 
 <script>
     $(document).ready(function () {
+        $('.imgsel').click(function () {
+            var id = $(this).parent().attr('imageid');
+            // alert(id)
+            if ($(this).hasClass('pri')) {
+                $('#priimg').val(id)
+            }
+            if ($(this).hasClass('sec1')) {
+                $('#secimg1').val(id)
+            }
+            if ($(this).hasClass('sec2')) {
+                $('#secimg2').val(id)
+            }
+            if ($(this).hasClass('gal')) {
+                var prevval = $('#galimg').val();
+                if(prevval.trim()!="")
+                    $('#galimg').val(prevval+";"+id)
+                else
+                    $('#galimg').val(id)
+            }
+        })
+        $('.selectcat').click(function(){
+            event.stopPropagation()
+            $('#parentcatid').val($(this).attr("catid"));
+            $('#parentcatname').val($(this).attr("catname"));
+            $('#cattype').val($(this).attr("cattype"));
+        })
         $('#resetform').click(function () {
             $('#createcategoryform').trigger('reset');
         })

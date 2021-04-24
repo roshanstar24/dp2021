@@ -72,7 +72,7 @@
                                     <select class="custom-select select2" name="primary_category" id="primary_category">
                                         <% category.forEach((cat)=>{
                                             if(cat["enabled"] == 1 && cat["type"] == 'primary'){%>
-                                            <option value="<%=cat["name"] %>"><%=cat["name"] %>
+                                            <option catid="<%=cat["id"]%>" value="<%=cat["name"] %>"><%=cat["name"] %>
                                             </option>
                                             <%} })%>
                                     </select>

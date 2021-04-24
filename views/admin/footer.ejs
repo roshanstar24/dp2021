@@ -59,7 +59,7 @@
             })
         })
 
-        $('.sendajax').click(function (event) {
+        $('body').on('click','.sendajax',function (event) {
             aj = $(this)
             console.log(aj.attr('ahref'))
             event.preventDefault();

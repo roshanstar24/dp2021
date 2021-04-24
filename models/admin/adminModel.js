@@ -4,7 +4,6 @@ const tag = require('./../tag');
 const category = require('./../category');
 const image = require('./../images');
 const product = require('./../product');
-const product_master = require('./../product');
 
 
 exports.loginAuth = (username) => {
@@ -101,7 +100,7 @@ exports.deleteCategory = (data) => {
 }
 
 exports.getCategory = () => {
-    return category.findAll({ raw: true });
+    return category.findAll({ "order": [['sort', 'ASC']]},{ raw: true },);
 }
 
 exports.getOneCategory = (data) => {

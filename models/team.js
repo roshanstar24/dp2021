@@ -45,23 +45,23 @@ const dp_team = connection.define('dp_teams', {
 dp_team.sync({
     // force: true
 }).then(() => {
-    dp_team.create({
-        'name': 'admin',
-        'email1': 'spectrum@gmail.com',
-        'password1': 'admin@1234',
-        'role': 'Admin',
-        'dob': '1989-03-24',
-        'doj': '2021-01-05',
-        'nickname': 'Roshan',
-        'education': 'MCA',
-        'phone1': '7875442118',
-        'phone2': '8340295981',
-        'city': 'patna',
-        'facebook': 'https://www.facebook.com/roshan.light.106/',
-        'addressline1': 'Amrudi Gali',
-        'addressline2': 'Nala Road',
-        'pincode': '800004'
-    }).catch((err) => console.log(err))
+    // dp_team.create({
+    //     'name': 'admin',
+    //     'email1': 'spectrum@gmail.com',
+    //     'password1': 'admin@1234',
+    //     'role': 'Admin',
+    //     'dob': '1989-03-24',
+    //     'doj': '2021-01-05',
+    //     'nickname': 'Roshan',
+    //     'education': 'MCA',
+    //     'phone1': '7875442118',
+    //     'phone2': '8340295981',
+    //     'city': 'patna',
+    //     'facebook': 'https://www.facebook.com/roshan.light.106/',
+    //     'addressline1': 'Amrudi Gali',
+    //     'addressline2': 'Nala Road',
+    //     'pincode': '800004'
+    // }).catch((err) => console.log(err))
     // dp_team.create({ 'name': 'admin1', 'email1': 'spectrum@gmail.coms', 'password1': 'admin@1234', 'role': 'Admin' }).catch((err) => console.log(err))
     console.log("Team Table Done.");
 })

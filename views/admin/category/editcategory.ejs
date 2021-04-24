@@ -1,4 +1,23 @@
 <link rel="stylesheet" href="/assets/admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<style>
+    ul.cattree > li {
+    color: red;
+}
+
+ul.cattree > li> ul >li{
+    color:blue
+}
+ul.cattree > li > ul> li >ul>li{
+    color:green
+}
+ul.cattree > li > ul> li >ul>li>ul>li{
+    color:orange
+}
+
+ul.cattree{
+    cursor : pointer;
+}
+</style>
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -15,39 +34,189 @@
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
+<%
+%>
 <!-- /.content-header -->
 <div class="container-fluid">
     <form action="/admin/updatecategory" method="POST" id="updatecategoryform">
         <div class="row">
-            <div class="col-md-6 card">
-                <div class="card-header">
-                    <h5 class="card-title">Category Details</h5>
-                </div>
-                <div class="card-body">
+            <div class="col-md-6">                
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h5 class="card-title">Category Details</h5>
+
+                    </div>
+
+                
                     <div class="card-body">
                         <div class="form-group row">
-                            <label for="name" class="col-sm-2 col-form-label">Category Name</label>
+                            <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-10">
-
-                                <input type="text" class="form-control" id="name" placeholder="Name" name="name"
-                                    value="<%=category.name%>">
-                                <input type="text" readonly class="form-control" value="<%=category.id%>" name="id">
+                                <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="<%=category.name%>">
+                                <input type="text" class="form-control" readonly hidden placeholder="Name" name="id" value="<%=category.id%>">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="type" class="col-sm-2 col-form-label">Type</label>
+                            <label for="name" class="col-sm-2 col-form-label">Sort Order</label>
                             <div class="col-sm-10">
-                                <select class="custom-select" name="type">
-                                    <option value="secondary" <%= (category.type == 'secondary') ? 'selected' : ''%>>
-                                        Secondary - 2nd Level</option>
-                                    <option value="tertiary" <%= (category.type == 'tertiary') ? 'selected' : ''%>>
-                                        Tertiary - 3rd
-                                        Level</option>
-                                    <option value="quaternary" <%= (category.type == 'quaternary') ? 'selected' : ''%>>
-                                        Quaternary -
-                                        4th Level</option>
-                                </select>
+                                <input type="number" class="form-control" id="order" placeholder="Sort Order" name="sort"  value="<%=category.sort%>">
                             </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-2 col-form-label">Parent ID</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" placeholder="Parent Category id" name="parentcategory" type="text" readonly id="parentcatid"  value="<%=category.parentcategory%>">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-2 col-form-label">Parent Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" placeholder="Parent Category Name" type="text" readonly id="parentcatname" >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-2 col-form-label">Type</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" placeholder="Category Type" name="type" type="text" readonly id="cattype"  value="<%=category.type%>">
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h5 class="card-title">Category Infomration</h5>
+                    </div>
+                    <div class="card-body">
+                        
+                        <div class="form-group row">
+                            <label for="role" class="col-sm-3 col-form-label">Heading</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" placeholder="Heading" name="heading" type="text" id="heading"  value="<%=category.heading%>" >
+                            </div>
+                        </div>  
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                                <textarea name="description"  style="width: 100%"><%=category.description%></textarea>
+                            </div>
+                        </div>                     
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">                
+                <div class="card card-warning">
+                    <div class="card-header">
+                        <h5 class="card-title">Category View</h5>
+                         <i class="fas fa-sync float-right sendajax" ahref="/admin/addcategory"></i>
+                    </div>
+                
+                    <div class="card-body">
+                        <ul class="cattree">
+                            <%
+                            for( d in treedata){
+                                if(treedata[d]["type"]=='primary'){
+                                    %><li class="selectcat" cattype="secondary" catid="<%=d%>" catname="<%=treedata[d]["text"]%>"><%=treedata[d]["text"]%><ul><%
+                                    <!-- console.log(treedata[d]["text"]) -->
+                                    treedata[d]["nodes"].forEach(m=>{
+                                        %><li class="selectcat" cattype="tertiary" catid="<%=m%>" catname="<%=treedata[m]["text"]%>"><%=treedata[m]["text"]%><ul><%
+                                        <!-- console.log(treedata[m]["text"]) -->
+                                        treedata[m]["nodes"].forEach(n=>{
+                                            %><li class="selectcat" cattype="quaternary" catid="<%=n%>" catname="<%=treedata[n]["text"]%>"><%=treedata[n]["text"]%><ul><%
+                                            <!-- console.log(treedata[n]["text"]) -->
+                                            treedata[n]["nodes"].forEach(o=>{
+                                                %><li><%=treedata[o]["text"]%></li><%
+                                                <!-- console.log(treedata[o]["text"]) -->
+                                               
+                                            })
+                                            %></ul></li><%
+                                        })
+                                        %></ul></li><%
+                                    })
+                                    %></ul></li><%
+                                }
+                            }
+                            %>  
+                        </ul>                   
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h5 class="card-title">Category Picture
+                        </h5>
+                        <i class="fas fa-chevron-circle-down float-right" id="img-down"></i>
+                    </div>
+                    <div class="card-body" id="img-down-card">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Primary | Secondary Image</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group mb-3" aria-label="Primary Image" data-balloon-pos="up-left">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-image"></i></span>
+                                            </div>
+                                            <input name="primary_img" value="<%=category.primary_img%>"type="text" class="form-control" placeholder="Primary Image" id="priimg">
+                                        </div>
+                                        <div class="input-group mb-3" aria-label="Secondary Image 1"
+                                            data-balloon-pos="up-left">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-file-image"></i></span>
+                                            </div>
+                                            <input name="secondary_img1" value="<%=category.secondary_img1%>" type="text" class="form-control" placeholder="Secondary Image 1"
+                                                id="secimg1">
+                                        </div>
+                                        <div class="input-group mb-3" aria-label="Secondary Image 2"
+                                            data-balloon-pos="up-left">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-file-image"></i></span>
+                                            </div>
+                                            <input name="secondary_img2" value="<%=category.secondary_img2%>" type="text" class="form-control" placeholder="Secondary Image 2"
+                                                id="secimg2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-success">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Gallery Images</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group mb-3" aria-label="Gallery Image" data-balloon-pos="up-left">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="far fa-images"></i></span>
+                                            </div>
+                                            <textarea name="gallery_img" placeholder="Gallery Image" id="galimg" style="width: calc(100% - 50px);"><%=category.gallery_img%></textarea>
+                                            <!-- <input type="text" class="form-control" placeholder="Gallery Image" id="galimg"> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <%images.forEach((image)=>{%>
+                                <div class="col-sm-2 prodimg" imageid="<%=image["id"]%>">
+                                    <button type="button" class="btn imgsel pri btn-outline-success btn-sm">Primary</button>
+                                    <button type="button" class="btn imgsel sec1 btn-outline-success btn-sm">Secondary
+                                        1</button>
+                                    <button type="button" class="btn imgsel sec2 btn-outline-success btn-sm">Secondary
+                                        2</button>
+                                    <button type="button" class="btn imgsel gal btn-outline-success btn-sm">Gallery</button>
+                                    <div class="imgid"><%=image["id"]%></div>
+                                    <a href="<%=image["imagepath"]%>" data-toggle="lightboxs" data-title="
+                                        <%=image["name"]%>"
+                                            data-gallery="gallery" title="<%=image["name"]%>">
+                                                <img src="<%=image["thumbnailpath"]%>" class="img-fluid mb-2">
+                                    </a>
+                                </div>
+                                <%})%>
                         </div>
                     </div>
                 </div>
@@ -57,8 +226,36 @@
 </div>
 
 
+
+
 <script>
     $(document).ready(function () {
+        $('.imgsel').click(function () {
+            var id = $(this).parent().attr('imageid');
+            // alert(id)
+            if ($(this).hasClass('pri')) {
+                $('#priimg').val(id)
+            }
+            if ($(this).hasClass('sec1')) {
+                $('#secimg1').val(id)
+            }
+            if ($(this).hasClass('sec2')) {
+                $('#secimg2').val(id)
+            }
+            if ($(this).hasClass('gal')) {
+                var prevval = $('#galimg').val();
+                if(prevval.trim()!="")
+                    $('#galimg').val(prevval+";"+id)
+                else
+                    $('#galimg').val(id)
+            }
+        })
+        $('.selectcat').click(function(){
+            event.stopPropagation()
+            $('#parentcatid').val($(this).attr("catid"));
+            $('#parentcatname').val($(this).attr("catname"));
+            $('#cattype').val($(this).attr("cattype"));
+        })
         $('#resetform').click(function () {
             $('#updatecategoryform').trigger('reset');
         })

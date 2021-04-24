@@ -29,10 +29,12 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Type</th>
-                            <th>Publisher</th>
-                            <th>ID</th>
+                            <th>Parent Category</th>
+                            <th>Heading</th>
+                            <th>Sort</th>
                             <% if(loginuser.role == "Admin" || loginuser.role =="Author"){%>
                             <th>Action</th>
                             <%}%>
@@ -43,10 +45,13 @@
                         category.forEach((category)=>{
                             if(category["enabled"] == 1){%>
                         <tr>
+                            <td><%=category["id"] %></td>
                             <td><%=category["name"] %></td>
                             <td><%=category["type"] %></td>
-                            <td><%=category["published_by"] %></td>
-                            <td><%=category["id"] %></td>
+                            <td><%=category["parentcategory"] %></td>
+                            <td><%=category["heading"] %></td>
+                            <td><%=category["sort"] %></td>
+                            <!-- <td><%=category["published_by"] %></td> -->
                             <% if(loginuser.role == "Admin" || loginuser.role =="Author"){
                                 if(category["type"] != "primary"){%>
                             <td>
@@ -66,10 +71,12 @@
                         </tbody>
                     <tfoot>
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Type</th>
-                            <th>Publisher</th>
-                            <th>ID</th>
+                            <th>Parent Category</th>
+                            <th>Heading</th>
+                            <th>Sort</th>
                             <% if(loginuser.role == "Admin" || loginuser.role =="Author"){%>
                             <th>Action</th>
                             <%}%>
@@ -147,7 +154,8 @@
             })
 
         })
-        $('.editcategory').click(function () {
+        
+        $('#example1').on('click','.editcategory' ,function () {
             $.ajax({
                 url: '/admin/editcategory',
                 method: 'post',
