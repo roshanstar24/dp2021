@@ -62,7 +62,7 @@
                         for( d in treedata){
                             if(treedata[d]["type"]=='primary'){
                                 %><li class="<%=treedata[d]["nodes"].length > 0 ? "has-children" : ""%>">
-                                    <a href="#"><%=treedata[d]["text"]%><%=treedata[d]["nodes"].length > 0%></a>
+                                    <a href="#"><%=treedata[d]["text"]%></a>
                                 <%if(treedata[d]["nodes"].length > 0){%>
                                     <ul class="cd-secondary-dropdown is-hidden">                                        
                                     <li class="go-back">
@@ -73,7 +73,7 @@
                                     treedata[d]["nodes"].forEach(m=>{
                                         %>
                                         <li class="<%=treedata[m]["nodes"].length > 0 ? "has-children" : ""%>">
-                                        <a href="#"><%=treedata[m]["text"]%> - <%=treedata[m]["nodes"].length > 0%></a>
+                                        <a href="#"><%=treedata[m]["text"]%></a>
                                     <%if(treedata[m]["nodes"].length > 0){%>
                                         <ul class="is-hidden">
                                             <li class="go-back"><a href="#0"><%=treedata[m]["text"]%></a></li>
@@ -82,7 +82,7 @@
                                         <!-- console.log(treedata[m]["text"]) -->
                                             treedata[m]["nodes"].forEach(n=>{
                                                 %><li class="<%=treedata[n]["nodes"].length > 0 ? "has-children" : ""%>">
-                                                    <a href="#"><%=treedata[n]["text"]%> - <%=treedata[n]["nodes"].length > 0%></a>
+                                                    <a href="#"><%=treedata[n]["text"]%></a>
                                                     <ul class="has-children is-hidden">
                                                         <li class="go-back"><a href="#0"><%=treedata[n]["text"]%></a></li>
                                                         <li class="see-all"><a href="#">All <%=treedata[n]["text"]%></a></li>
