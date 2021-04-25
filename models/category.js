@@ -31,28 +31,34 @@ category_master.sync({
     force: true
 }).then(() => {
      category_master.create({
-         'name': 'Cloth',
-         'type': 'primary'
+         'name': 'Textile',
+         'type': 'primary',
+         'sort': 1
      }).catch((err) => console.log(err));
      category_master.create({
          'name': 'Mehndi',
-         'type': 'primary'
+         'type': 'primary',
+         'sort': 2
      }).catch((err) => console.log(err));
      category_master.create({
          'name': 'Painting',
-         'type': 'primary'
+         'type': 'primary',
+         'sort' : 3
      }).catch((err) => console.log(err));
      category_master.create({
          'name': 'Photography',
-         'type': 'primary'
+         'type': 'primary',
+         'sort' : 4
      }).catch((err) => console.log(err));
      category_master.create({
          'name': 'Interior',
-         'type': 'primary'
+         'type': 'primary',
+         'sort' : 5
      }).catch((err) => console.log(err));
      category_master.create({
          'name': 'Graphics Design',
-         'type': 'primary'
+         'type': 'primary',
+         'sort' : 6
      }).catch((err) => console.log(err));
     
     console.log("Category  Master Table Done.");
