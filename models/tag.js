@@ -17,7 +17,7 @@ const tag_master = connection.define('tag_master', {
 })
 
 tag_master.sync({
-    // force: true
+     force: true
 }).then(() => {
     console.log("Tags Master Table Done.");
 

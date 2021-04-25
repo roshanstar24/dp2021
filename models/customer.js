@@ -33,7 +33,7 @@ const customer_master = connection.define('customer_masters', {
 })
 
 customer_master.sync({
-//    force: true
+    force: true
 }).then(() => {
     console.log("Customer Master Table Done.");
 

@@ -28,32 +28,32 @@ const category_master = connection.define('category_master', {
 
 
 category_master.sync({
-//    force: true
+    force: true
 }).then(() => {
-    // category_master.create({
-    //     'name': 'Cloth',
-    //     'type': 'primary'
-    // }).catch((err) => console.log(err));
-    // category_master.create({
-    //     'name': 'Mehndi',
-    //     'type': 'primary'
-    // }).catch((err) => console.log(err));
-    // category_master.create({
-    //     'name': 'Painting',
-    //     'type': 'primary'
-    // }).catch((err) => console.log(err));
-    // category_master.create({
-    //     'name': 'Photography',
-    //     'type': 'primary'
-    // }).catch((err) => console.log(err));
-    // category_master.create({
-    //     'name': 'Interior',
-    //     'type': 'primary'
-    // }).catch((err) => console.log(err));
-    // category_master.create({
-    //     'name': 'Graphics Design',
-    //     'type': 'primary'
-    // }).catch((err) => console.log(err));
+     category_master.create({
+         'name': 'Cloth',
+         'type': 'primary'
+     }).catch((err) => console.log(err));
+     category_master.create({
+         'name': 'Mehndi',
+         'type': 'primary'
+     }).catch((err) => console.log(err));
+     category_master.create({
+         'name': 'Painting',
+         'type': 'primary'
+     }).catch((err) => console.log(err));
+     category_master.create({
+         'name': 'Photography',
+         'type': 'primary'
+     }).catch((err) => console.log(err));
+     category_master.create({
+         'name': 'Interior',
+         'type': 'primary'
+     }).catch((err) => console.log(err));
+     category_master.create({
+         'name': 'Graphics Design',
+         'type': 'primary'
+     }).catch((err) => console.log(err));
     
     console.log("Category  Master Table Done.");
 

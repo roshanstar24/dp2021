@@ -61,7 +61,7 @@ const product_master = connection.define('product_masters', {
 
 
 product_master.sync({
-    // force: true
+     force: true
 
 
 
