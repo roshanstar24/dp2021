@@ -7,7 +7,7 @@ const path = require('path')
 const app = express();
 const imageThumbnail = require('jimp');
 const { REPL_MODE_SLOPPY } = require('repl');
-const { render } = require('../routes/adminRoute');
+// const { render } = require('../routes/adminRoute');
 
 var renderdata = {};
 
@@ -377,31 +377,20 @@ exports.addCategoryForm = (req, res) => {
         renderdata["loginuser"] = req.session.loginuser
         treedata={}
         data.forEach(cat=>{
-            treedata[cat.id]={"text":cat.name,"type":cat.type,"sort":cat.sort,"nodes":[]}
-        })
+            if(cat.enabled){
+                treedata[cat.id]={"text":cat.name,"type":cat.type,"sort":cat.sort,"nodes":[]}
+                }
+            })
+            console.log(treedata)
         data.forEach(cat=>{
-            if(cat.type!='primary'){
-                treedata[cat.parentcategory]["nodes"].push(cat.id)
+            if(cat.type!='primary' && cat.enabled){
+                if(treedata[cat.parentcategory]){
+                    treedata[cat.parentcategory]["nodes"].push(cat.id)
+                }
             }
         })
         console.log(treedata)
         renderdata[treedata]= treedata
-        jstree=[]
-        // for( d in treedata){
-        //     if(treedata[d]["type"]=='primary'){
-        //         console.log(treedata[d]["text"])
-        //         treedata[d]["nodes"].forEach(m=>{
-        //             console.log(treedata[m]["text"])
-        //             treedata[m]["nodes"].forEach(n=>{
-        //                 console.log(treedata[n]["text"])
-        //                 treedata[n]["nodes"].forEach(o=>{
-        //                     console.log(treedata[o]["text"])
-                           
-        //                 })
-        //             })
-        //         })
-        //     }
-        // }
         adminModel.getImage().then((data) => {
             renderdata["images"] = data;
             res.render('admin/category/addcategory', renderdata)
@@ -449,14 +438,18 @@ exports.editCategory = (req, res) => {
         renderdata["loginuser"] = req.session.loginuser
         treedata={}
         adminModel.getCategory(req.body).then((cdata) => {
-            console.log("=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
-            console.log(cdata)
+            treedata={}
             cdata.forEach(cat=>{
-                treedata[cat.id]={"text":cat.name,"type":cat.type,"sort":cat.sort,"nodes":[]}
-            })
+                if(cat.enabled){
+                    treedata[cat.id]={"text":cat.name,"type":cat.type,"sort":cat.sort,"nodes":[]}
+                    }
+                })
+                console.log(treedata)
             cdata.forEach(cat=>{
-                if(cat.type!='primary'){
-                    treedata[cat.parentcategory]["nodes"].push(cat.id)
+                if(cat.type!='primary' && cat.enabled){
+                    if(treedata[cat.parentcategory]){
+                        treedata[cat.parentcategory]["nodes"].push(cat.id)
+                    }
                 }
             })
             console.log(treedata)
@@ -562,8 +555,25 @@ exports.uploadProductIMG = (req, res) => {
     });
 }
 exports.addProductForm = (req, res) => {
-    adminModel.getCategory().then((cat) => {
-        renderdata["category"] = cat;
+    adminModel.getCategory().then((data) => {
+        renderdata["category"] = data;
+        treedata={}
+        data.forEach(cat=>{
+            if(cat.enabled){
+                treedata[cat.id]={"text":cat.name,"type":cat.type,"sort":cat.sort,"nodes":[]}
+                }
+            })
+            console.log(treedata)
+        data.forEach(cat=>{
+            if(cat.type!='primary' && cat.enabled){
+                if(treedata[cat.parentcategory]){
+                    treedata[cat.parentcategory]["nodes"].push(cat.id)
+                }
+            }
+        })
+        console.log(treedata)
+        console.log(treedata)
+        renderdata[treedata]= treedata
         adminModel.getTag().then((tags) => {
             renderdata["tags"] = tags;
             adminModel.getImage().then((data) => {

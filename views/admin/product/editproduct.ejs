@@ -501,11 +501,42 @@
             </div>
         </div>
     </form>
+    <textarea hidden id="treedata"><%=JSON.stringify(treedata)%></textarea>
 </div>
 
 
 <script>
     $(document).ready(function () {
+        var treecata = JSON.parse($('#treedata').val())
+        console.log(treecata)
+        $('#primary_category').change(function(){
+            pid = ($(this).find(":selected").attr('catid'));
+            alert(pid)
+            $('#secondary_category').html('<option></option>');
+            $('#tertiary_category').html('<option></option>');
+            $('#quaternary_category').html('<option></option>');
+            treecata[pid]['nodes'].forEach(element => {
+                $('#secondary_category').append('<option catid="'+element+'" value="'+treecata[element]["text"]+'">'+treecata[element]["text"]+'</option>')    
+            });
+        })
+        $('#secondary_category').change(function(){
+            pid = ($(this).find(":selected").attr('catid'));
+            alert(pid)
+            $('#tertiary_category').html('<option></option>');
+            $('#quaternary_category').html('<option></option>');
+            treecata[pid]['nodes'].forEach(element => {
+                $('#tertiary_category').append('<option catid="'+element+'" value="'+treecata[element]["text"]+'">'+treecata[element]["text"]+'</option>')    
+            });
+        })
+        $('#tertiary_category').change(function(){
+            pid = ($(this).find(":selected").attr('catid'));
+            alert(pid)
+            $('#quaternary_category').html('<option></option>');
+            treecata[pid]['nodes'].forEach(element => {
+                $('#quaternary_category').append('<option catid="'+element+'" value="'+treecata[element]["text"]+'">'+treecata[element]["text"]+'</option>')    
+            });
+        })
+
         $('.pricef').change(function(){
             dtype =$('#dtype').val();
             if(dtype == 'Absolute'){

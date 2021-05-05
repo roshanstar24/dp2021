@@ -1,0 +1,72 @@
+<%if(typeof treedata !== "undefined"){%>
+<div class="cd-dropdown-wrapper">
+    <!-- <h2><%=JSON.stringify(treedata)%></h2> -->
+    <a class="cd-dropdown-trigger" href="#0">Catalogue</a>
+    <nav class="cd-dropdown">
+        <h2>Catalogue</h2>
+        <a href="#0" class="cd-close">Close</a>
+        <ul class="cd-dropdown-content">
+            <%
+                for( d in treedata){
+                    if(treedata[d]["type"]=='primary'){
+                        %><li class="<%=treedata[d]["nodes"].length > 0 ? "has-children" : ""%>">
+                            <a href="/category/<%=treedata[d]["text"]%>"><%=treedata[d]["text"]%></a>
+                        <%if(treedata[d]["nodes"].length > 0){%>
+                            <ul class="cd-secondary-dropdown is-hidden">                                        
+                            <li class="go-back">
+                            <a href="#0"><%=treedata[d]["text"]%></a></li>
+                            <li class="see-all"><a href="/category/<%=treedata[d]["text"]%>">All <%=treedata[d]["text"]%></a></li>
+                            <%
+                        <!-- console.log(treedata[d]["text"]) -->
+                            treedata[d]["nodes"].forEach(m=>{
+                                %>
+                                <li class="<%=treedata[m]["nodes"].length > 0 ? "has-children" : ""%>">
+                                <a href="/category/<%=treedata[d]["text"]%>/<%=treedata[m]["text"]%>"><%=treedata[m]["text"]%></a>
+                            <%if(treedata[m]["nodes"].length > 0){%>
+                                <ul class="is-hidden thlevel">
+                                    <li class="go-back"><a href="#0"><%=treedata[m]["text"]%></a></li>
+                                    <li class="see-all"><a href="/category/<%=treedata[d]["text"]%>/<%=treedata[m]["text"]%>">All <%=treedata[m]["text"]%></a></li>
+                                    <%
+                                <!-- console.log(treedata[m]["text"]) -->
+                                    treedata[m]["nodes"].forEach(n=>{
+                                        %><li class="<%=treedata[n]["nodes"].length > 0 ? "has-children" : ""%>">
+                                            <a href="/category/<%=treedata[d]["text"]%>/<%=treedata[m]["text"]%>/<%=treedata[n]["text"]%>"><%=treedata[n]["text"]%></a>
+                                            <ul class="has-children is-hidden qulevel">
+                                                <li class="go-back"><a href="#0"><%=treedata[n]["text"]%></a></li>
+                                                <li class="see-all"><a href="/category/<%=treedata[d]["text"]%>/<%=treedata[m]["text"]%>/<%=treedata[n]["text"]%>">All <%=treedata[n]["text"]%></a></li>
+                                                <%
+                                        <!-- console.log(treedata[n]["text"]) -->
+                                            treedata[n]["nodes"].forEach(o=>{
+                                                %><li><a href="/category/<%=treedata[d]["text"]%>/<%=treedata[m]["text"]%>/<%=treedata[n]["text"]%>/<%=treedata[o]["text"]%>"><%=treedata[o]["text"]%></a></li><%
+                                                <!-- console.log(treedata[o]["text"]) -->                                                
+                                            })
+                                        %></ul></li><%
+                                    })
+                                %></ul></li><%
+                            }
+                            })
+                        %></ul></li><%
+                        }
+                    }
+                }
+                %>
+        </ul> <!-- .cd-dropdown-content -->
+    </nav> <!-- .cd-dropdown -->
+</div> <!-- .cd-dropdown-wrapper -->
+<script>
+    $(document).ready(function(){
+       var mqh=25
+        $('.qulevel').each(function(){
+            qh = $(this).height();
+            sah=($(this).find('.see-all').height())
+            if(qh+sah > mqh) {
+                mqh = qh+sah;
+                $(this).parents('.thlevel').css('height',mqh+"px")
+            }           
+       })
+    })
+</script>
+<%}
+else{%>
+    <h5>Catalogue data not available (TreeData)</h5>
+<%}%>

@@ -1,0 +1,316 @@
+<%- include('template/header.ejs')%>
+<%- include('template/topstrip.ejs')%>
+<%- include('template/nav.ejs')%>
+
+<article hidden id="pdata"><%=JSON.stringify(plist)%></article>
+<article hidden id="idtosrc"><%=JSON.stringify(idtosrc)%></article>
+<input value="<%=pcount%>" hidden id="pcount">
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+
+
+                <div class="row mb-4">
+                    <div class="col-md-12 d-flex justify-content-between align-items-center">
+                        <h4 class="product-select">Select <%=catname%></h4>
+                        <select class="selectpicker" id="sortselect">
+                            <option value="updated">Updated</option>
+                            <option value="atoz">Sort : A-Z</option>
+                            <option value="ztoa">Sort : Z-A</option>
+                            <option value="ltoh">Price : Low to High</option>
+                            <option value="htol">Price : High to Low</option>
+                            <option value="ltoo">Year : Latest to Oldest</option>
+                            <option value="otol">Year : Oldest to Latest</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" id="pcard">
+                <!----- CONTENT HERE INDEX PAGE ------>
+                <!----- CONTENT HERE INDEX PAGE ------>
+                <!----- CONTENT HERE INDEX PAGE ------>
+                <!----- CONTENT HERE INDEX PAGE ------>
+                <!----- CONTENT HERE INDEX PAGE ------>
+                <!----- CONTENT HERE INDEX PAGE ------>
+                
+                </div>
+                <div class="row mt-5">
+          <div class="col text-center">
+            <div class="block-27" id="pagination-block">
+                <ul>
+                </ul>
+            </div>
+          </div>
+        </div>
+            </div>
+            <div class="col-md-3">
+                <div class="sidebar-box ftco-animate">
+                    <div class="categories">
+                        <h3>Inside <%=catname %>    </h3>
+                        <ul class="p-0">
+                            <%for(t in treedata){
+                                if(treedata[t].text == catname){
+                                    treedata[t]["nodes"].forEach(n=>{
+                                        %>
+                                        <li>
+                                            <a href="<%=catname +'/'+treedata[n]["text"]%>"><%=treedata[n]["text"]%> <span class="fa fa-chevron-right"></span></a>
+                                        </li>            
+                                        <%
+                                    })
+                                }
+                            }%>
+                        </ul>
+                    </div>
+                    <div class="side-cat">
+                        <h3>Quick Navigation</h3>
+                        <ul class="ul-no-border">
+                            <%
+                                for( d in treedata){
+                                    if(treedata[d]["type"]=='primary' && treedata[d]["text"] == catlevel["p"]){
+                                        %><li>
+                                            <a href="/category/<%=treedata[d]["text"]%>"><%=treedata[d]["text"]%></a>
+                                        <%if(treedata[d]["nodes"].length > 0){%>
+                                            <ul class="cd-secondary-dropdown is-hidden ul-no-border">
+                                            
+                                            <%
+                                        <!-- console.log(treedata[d]["text"]) -->
+                                            treedata[d]["nodes"].forEach(m=>{
+                                                %>
+                                                <li >
+                                                <a href="/category/<%=treedata[d]["text"]%>/<%=treedata[m]["text"]%>"><%=treedata[m]["text"]%></a>
+                                            <%if(treedata[m]["nodes"].length > 0){%>
+                                                <ul class="is-hidden thlevel">
+                                                    
+                                                    <%
+                                                <!-- console.log(treedata[m]["text"]) -->
+                                                    treedata[m]["nodes"].forEach(n=>{
+                                                        %><li >
+                                                            <a href="/category/<%=treedata[d]["text"]%>/<%=treedata[m]["text"]%>/<%=treedata[n]["text"]%>"><%=treedata[n]["text"]%></a>
+                                                            <ul class="has-children is-hidden qulevel">
+                                                              
+                                                                <%
+                                                        <!-- console.log(treedata[n]["text"]) -->
+                                                            treedata[n]["nodes"].forEach(o=>{
+                                                                %><li><a href="/category/<%=treedata[d]["text"]%>/<%=treedata[m]["text"]%>/<%=treedata[n]["text"]%>/<%=treedata[o]["text"]%>"><%=treedata[o]["text"]%></a></li><%
+                                                                <!-- console.log(treedata[o]["text"]) -->                                                
+                                                            })
+                                                        %></ul></li><%
+                                                    })
+                                                %></ul></li><%
+                                            }
+                                            })
+                                        %></ul></li><%
+                                        }
+                                    }
+                                }
+                                %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- loader -->
+
+<%- include('template/footbar.ejs')%>
+<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+<%- include('template/footer.ejs')%>
+
+<script>
+    $(document).ready(function(){
+        $('#sortselect').change(function(){            
+            sortc = ($(this).find(":selected").val());
+            $.ajax({
+                url:'',
+                data:"sort="+sortc,
+                type : 'post',
+                dataType : 'json',
+                success:function(data){
+                    console.log(data)
+                    $('#pdata').html(JSON.stringify(data))
+                    refreshindex(0,11);
+                    // pagina();
+                }
+            })
+        })
+        function pagina()
+        {
+            // alert('pagina')
+            pagecardsize = 12;
+            $('#pagination-block ul').html('');
+            pagicount = ($('#pcount').val()/pagecardsize)
+            if ($('#pcount').val()%pagecardsize !=0){
+                pagicount++
+            }
+            for(var p = 1; p <= pagicount ; p++){
+                $('#pagination-block ul').append('<li><a>'+p+'</a></li>')
+            }
+        }
+        pagina();
+        function refreshindex(start,end){
+            console.log(start+" - "+end)
+            pdata   = JSON.parse($('#pdata').html());
+            idtosrc = JSON.parse($('#idtosrc').html());
+            // console.log(pdata);
+            // console.log(idtosrc);
+            $('#pcard').html('')
+            if(pdata.length != 0){
+                for(var i = start ; i <= end && i < pdata.length; i++ ) {
+                    p = pdata[i]
+                    // console.log(p)
+                    cardcopy = $('#cardcopy').clone();
+                    $(cardcopy).removeAttr('id');
+                    $(cardcopy).find('div.product').addClass('fadeInUp ftco-animated')
+                    console.log(p.primary_img)
+                    if(idtosrc[p.primary_img])
+                        if(idtosrc[p.primary_img]["thumbnail"])
+                            cardcopy.find('img').attr('src',idtosrc[p.primary_img]["thumbnail"]);
+                        else if(idtosrc[p.primary_img]["img"])
+                            cardcopy.find('img').attr('src',idtosrc[p.primary_img]["img"]);
+                    cardcopy.find('.sale').html(p.ribbon);
+                    cardcopy.find('.category').html(p["<%=cattype%>"]);
+                    cardcopy.find('span.price-sale').html(p.price);
+                    cardcopy.find('h2').html(p.name)
+                    cardcopy.find('span.fprice').html(p.finalprice);
+                    cardcopy.find('a.plink').attr('href','/productid/'+p.id+"?n="+p.primary_category+"-"+p.secondary_category+"-"+p.name)
+                    cardcopy.css('display','');
+                    // console.log(cardcopy)
+                    $('#pcard').append(cardcopy);
+                
+                }
+            }
+            else{
+                $('#pcard').html('<h2 class="no-product shimmer">No Product in Selected Category<h2>')
+            }
+            
+        }
+        refreshindex(0,11);
+        // alert('refresh')
+        $('#pagination-block ul li').on('click','a ',(function(event){
+            event.preventDefault();
+            refreshindex(($(this).html().trim()-1)*pagecardsize,($(this).html().trim()-1)*pagecardsize+11)
+            // console.log("done")
+        }))
+    })
+</script>
+<div class="col-md-4 d-flex" id="cardcopy" style="display: none !important;">
+    <a class="plink">
+        <div class="product ftco-animate">
+            <div class="img d-flex align-items-center justify-content-center" >
+                <img src="" style = "position: absolute; height: inherit; width: -webkit-fill-available;">
+            </div>                                
+            <div class="text text-center">
+                <span class="sale"></span>
+                <span class="category"></span>
+                <h2></h2>
+                <p class="mb-0">
+                    <span class="price price-sale"></span> 
+                    <span class="price fprice"></span></p>
+            </div>
+        </div>
+    </a>
+</div>
+<style>
+    .side-cat{
+        margin-top : 30px
+    }
+    .side-cat ul {
+        padding-left: 20px;
+        list-style: none;
+        border-left-color: violet;
+        border-left-style: dashed;
+        border-left-width: 1px;
+    }
+
+    .side-cat ul.ul-no-border{
+        border: none;
+    }
+
+    .side-cat li a {
+    text-decoration: none;
+    
+    -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+    transition: font-size 0.3s ease, background-color 0.3s ease;
+    }
+    
+    .side-cat li a:hover {
+    font-size: 25px;
+    color : #000
+    }
+
+    .shimmer {
+    font-family: "Lato";
+    font-weight: 300;
+    font-size: 2em;
+    margin: 0 auto;
+    display: inline;
+    margin-bottom: 0;
+    text-align: center;
+    color: rgba(255,255,255,0.1);
+    background: -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff));
+    background: -moz-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff));
+    background: gradient(linear, left top, right top, from(#222), to(#222), color-stop(0.5, #fff));
+    -webkit-background-size: 125px 100%;
+    -moz-background-size: 125px 100%;
+    background-size: 125px 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    -webkit-animation-name: shimmer;
+    -moz-animation-name: shimmer;
+    animation-name: shimmer;
+    -webkit-animation-duration: 4s;
+    -moz-animation-duration: 4s;
+    animation-duration: 4s;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-color: #222;
+    }
+    @-moz-keyframes shimmer {
+    0% {
+        background-position: left;
+    }
+    100% {
+        background-position:  right;
+    }
+    }
+    @-webkit-keyframes shimmer {
+    0% {
+        background-position: top left;
+    }
+    100% {
+        background-position: top right;
+    }
+    }
+    @-o-keyframes shimmer {
+    0% {
+        background-position: top left;
+    }
+    100% {
+        background-position: top right;
+    }
+    }
+    @keyframes shimmer {
+    0% {
+        background-position: top left;
+    }
+    100% {
+        background-position: top right;
+    }
+    }
+
+    .no-product{
+        margin: auto;
+        margin-top: 50px;
+    }
+</style>

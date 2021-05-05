@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="/assets/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/assets/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="/assets/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
 <link rel="stylesheet" href="/assets/admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 <!-- SweetAlert2 -->
 <script src="/assets/admin/plugins/sweetalert2/sweetalert2.min.js"></script>
@@ -120,7 +119,7 @@
             "order": [[2, "asc"]]
         }).buttons().container();
 
-        $('.deletecategory').click(function () {
+        $('#example1').on('click','.deletecategory' ,function () {
             var this_ = $(this);
             Toast.fire({
                 position: 'top-end',

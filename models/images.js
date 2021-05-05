@@ -20,7 +20,7 @@ const image_master = connection.define('image_master', {
 
 
 image_master.sync({
-     force: true
+    //  force: true
 }).then(() => {
     console.log("Image  Master Table Done.");
 

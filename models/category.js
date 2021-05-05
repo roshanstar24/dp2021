@@ -28,38 +28,38 @@ const category_master = connection.define('category_master', {
 
 
 category_master.sync({
-    force: true
+    // force: true
 }).then(() => {
-     category_master.create({
-         'name': 'Textile',
-         'type': 'primary',
-         'sort': 1
-     }).catch((err) => console.log(err));
-     category_master.create({
-         'name': 'Mehndi',
-         'type': 'primary',
-         'sort': 2
-     }).catch((err) => console.log(err));
-     category_master.create({
-         'name': 'Painting',
-         'type': 'primary',
-         'sort' : 3
-     }).catch((err) => console.log(err));
-     category_master.create({
-         'name': 'Photography',
-         'type': 'primary',
-         'sort' : 4
-     }).catch((err) => console.log(err));
-     category_master.create({
-         'name': 'Interior',
-         'type': 'primary',
-         'sort' : 5
-     }).catch((err) => console.log(err));
-     category_master.create({
-         'name': 'Graphics Design',
-         'type': 'primary',
-         'sort' : 6
-     }).catch((err) => console.log(err));
+    //  category_master.create({
+    //      'name': 'Textile',
+    //      'type': 'primary',
+    //      'sort': 1
+    //  }).catch((err) => console.log(err));
+    //  category_master.create({
+    //      'name': 'Mehndi',
+    //      'type': 'primary',
+    //      'sort': 2
+    //  }).catch((err) => console.log(err));
+    //  category_master.create({
+    //      'name': 'Painting',
+    //      'type': 'primary',
+    //      'sort' : 3
+    //  }).catch((err) => console.log(err));
+    //  category_master.create({
+    //      'name': 'Photography',
+    //      'type': 'primary',
+    //      'sort' : 4
+    //  }).catch((err) => console.log(err));
+    //  category_master.create({
+    //      'name': 'Interior',
+    //      'type': 'primary',
+    //      'sort' : 5
+    //  }).catch((err) => console.log(err));
+    //  category_master.create({
+    //      'name': 'Graphics Design',
+    //      'type': 'primary',
+    //      'sort' : 6
+    //  }).catch((err) => console.log(err));
     
     console.log("Category  Master Table Done.");
 

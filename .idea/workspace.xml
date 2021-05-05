@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c1171e18-5744-4126-b69b-24e11ac35bdf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/models/category.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/category.js" afterDir="false" />
-    </list>
+    <list default="true" id="c1171e18-5744-4126-b69b-24e11ac35bdf" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619333625843</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="[14]: category update">
+      <created>1619334204245</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1619334204245</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -127,6 +132,7 @@
     <MESSAGE value="[13]: nodeModule" />
     <MESSAGE value="[13]: tables in force" />
     <MESSAGE value="[13]: redefined tables" />
-    <option name="LAST_COMMIT_MESSAGE" value="[13]: redefined tables" />
+    <MESSAGE value="[14]: category update" />
+    <option name="LAST_COMMIT_MESSAGE" value="[14]: category update" />
   </component>
 </project>
